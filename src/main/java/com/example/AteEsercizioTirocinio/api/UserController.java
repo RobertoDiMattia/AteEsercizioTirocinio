@@ -1,7 +1,6 @@
 package com.example.AteEsercizioTirocinio.api;
 
 import com.example.AteEsercizioTirocinio.service.UserService;
-import com.example.AteEsercizioTirocinio.transactionsDto.ContoCorrenteDto;
 import com.example.AteEsercizioTirocinio.transactionsDto.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         return ResponseEntity.ok(UserService.deleteUser(id));
     }
 

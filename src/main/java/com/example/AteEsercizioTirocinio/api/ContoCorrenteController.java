@@ -15,21 +15,21 @@ public class ContoCorrenteController {
 
     @PostMapping("/create")
     public ResponseEntity<ContoCorrenteDto> addContoCorrente (@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
-        return ResponseEntity.ok(userService.addContoCorrente(contoCorrenteDto));
+        return ResponseEntity.ok(contoCorrenteService.addContoCorrente(contoCorrenteDto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContoCorrenteDto> getContoCorrenteById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getContoCorrenteById(id);
+        return ResponseEntity.ok(contoCorrenteService.getContoCorrenteById(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ContoCorrenteDto> updateContoCorrente(@PathVariable Long id, @RequestBody ContoCorrenteDto contoCorrenteDto) {
-        return ResponseEntity.ok(userService.updateUser(id, contoCorrenteDto));
+        return ResponseEntity.ok(contoCorrenteService.updateUser(id, contoCorrenteDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteContoCorrente(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.deleteContoCorrente(id));
+        return ResponseEntity.ok(contoCorrenteService.deleteContoCorrente(id));
     }
 }

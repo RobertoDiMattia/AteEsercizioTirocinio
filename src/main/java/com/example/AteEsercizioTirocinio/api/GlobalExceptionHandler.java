@@ -1,5 +1,7 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.exceptions.BadRequestException;
+import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException{
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseBody
