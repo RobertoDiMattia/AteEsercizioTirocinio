@@ -1,5 +1,6 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.service.UserService;
 import com.example.AteEsercizioTirocinio.transactionsDto.UserDto;
 import jakarta.validation.Valid;
@@ -15,23 +16,23 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<UserDto> addUser (@RequestBody @Valid UserDto userDto){
-        return ResponseEntity.ok(UserService.addUser(userDto));
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto userDto){
+        return ResponseEntity.ok(userService.addUser(userDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(UserService.getUserById(id);
+    public ResponseEntity<UserDto> retrieveUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.retrieveUserById(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(UserService.updateUser(id, userDto));
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok(UserService.deleteUser(id));
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 
 }

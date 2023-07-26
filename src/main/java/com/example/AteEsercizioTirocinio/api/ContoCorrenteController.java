@@ -1,5 +1,6 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.service.ContoCorrenteService;
 import com.example.AteEsercizioTirocinio.transactionsDto.ContoCorrenteDto;
 import com.example.AteEsercizioTirocinio.transactionsDto.TransactionDto;
@@ -15,13 +16,13 @@ public class ContoCorrenteController {
     private ContoCorrenteService contoCorrenteService;
 
     @PostMapping("/create")
-    public ResponseEntity<ContoCorrenteDto> addContoCorrente (@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
+    public ResponseEntity<ContoCorrente> addContoCorrente (@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
         return ResponseEntity.ok(contoCorrenteService.addContoCorrente(contoCorrenteDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContoCorrenteDto> getContoCorrenteById(@PathVariable Long id) {
-        return ResponseEntity.ok(contoCorrenteService.getContoCorrenteById(id);
+    public ResponseEntity<ContoCorrenteDto> retrieveContoCorrenteById(@PathVariable Long id) {
+        return ResponseEntity.ok(contoCorrenteService.retrieveContoCorrenteById(id);
     }
 
     @PutMapping("/{id}")
@@ -35,13 +36,13 @@ public class ContoCorrenteController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<TransactionDto> addDeposit(@RequestBody @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(contoCorrenteService.addDeposit(transactionDto));
+    public ResponseEntity<TransactionDto> makeDeposit(@RequestBody @Valid TransactionDto transactionDto){
+        return ResponseEntity.ok(contoCorrenteService.makeDeposit(transactionDto));
     }
 
     @PostMapping("/withdrawl")
-    public ResponseEntity<TransactionDto> addDeposit(@RequestBody @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(contoCorrenteService.addDeposit(transactionDto));
+    public ResponseEntity<TransactionDto> makeWithdrawl(@RequestBody @Valid TransactionDto transactionDto){
+        return ResponseEntity.ok(contoCorrenteService.makeWithdrawl(transactionDto));
     }
 
 }

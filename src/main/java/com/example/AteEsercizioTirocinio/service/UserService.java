@@ -1,6 +1,7 @@
 package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
+import com.example.AteEsercizioTirocinio.mappers.UserMapper;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import com.example.AteEsercizioTirocinio.transactionsDto.UserDto;
@@ -13,34 +14,31 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDto addUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
+    private final UserMapper userMapper;
 
-        return userRepository.save(user);
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
-    public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+    public static UserDto retrieveUserById(Long id) {
+
     }
 
+    public User addUser(UserDto userDto) {
+        return userRepository.save(userMapper.userDtoToUser(userDto));
+    }
 
-    public UserDto updateUser(Long id, UserDto updatedUserDto) {
+    public UserDto updateUser(Long id, UserDto userDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("user not found with id: " + updatedUserDto.getId()));
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
 
-        user.setName(updatedUserDto.getName());
-        user.setLastName(updatedUserDto.getLastName());
-        user.setEmail(updatedUserDto.getEmail());
-
-        userRepository.save(updatedUserDto);
+        return
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+
 
 }

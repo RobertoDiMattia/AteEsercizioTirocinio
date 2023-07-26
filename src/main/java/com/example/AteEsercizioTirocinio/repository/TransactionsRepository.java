@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TransactionsRepository extends JpaRepository {
+public interface TransactionsRepository extends JpaRepository<Transactions, Long> {
 
     List<Transactions> findTop5ByContoIdOrderByDateTimeDesc(Long contoCorrenteId);
 }

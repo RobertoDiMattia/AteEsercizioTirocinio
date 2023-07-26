@@ -4,11 +4,9 @@ import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface ContoCorrenteRepository extends JpaRepository {
+public interface ContoCorrenteRepository extends JpaRepository<ContoCorrente, Long> {
 
-    ContoCorrente findByUserId(Long userId);
+    ContoCorrente retrieveByContoCorrenteId(Long userId);
 
 }
