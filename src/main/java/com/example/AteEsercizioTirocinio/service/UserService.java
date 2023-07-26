@@ -1,5 +1,6 @@
 package com.example.AteEsercizioTirocinio.service;
 
+import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import com.example.AteEsercizioTirocinio.transactionsDto.UserDto;
@@ -21,12 +22,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
-
 
 
     public UserDto updateUser(Long id, UserDto updatedUserDto) {
@@ -38,7 +37,6 @@ public class UserService {
         user.setEmail(updatedUserDto.getEmail());
 
         userRepository.save(updatedUserDto);
-
     }
 
     public void deleteUser(Long id) {
