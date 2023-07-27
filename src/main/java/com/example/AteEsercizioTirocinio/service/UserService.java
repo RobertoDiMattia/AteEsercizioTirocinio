@@ -20,25 +20,27 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public static UserDto retrieveUserById(Long id) {
-
-    }
-
     public User addUser(UserDto userDto) {
         return userRepository.save(userMapper.userDtoToUser(userDto));
     }
 
-    public UserDto updateUser(Long id, UserDto userDto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+    public User retrieveUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+    }
 
-        return
+    public User updateUser(UserDto userDto) {
+        User user = userRepository.findById(userMapper.userDtoToUser(userDto).getId())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        return userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-
-
+    public User retrieveUserByEmail(String email) {
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+    }
 }

@@ -21,18 +21,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> retrieveUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.retrieveUserById(id);
+    public ResponseEntity<User> retrieveUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.retrieveUserById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(id, userDto));
+    @GetMapping("/{id}")
+    public ResponseEntity<User> retrieveUserById(@PathVariable String email) {
+        return ResponseEntity.ok(userService.retrieveUserByEmail(email));
+    }
+
+    @PutMapping("/modifica")
+    public ResponseEntity<User> updateUser(@PathVariable @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(userDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.deleteUser(id));
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 
 }

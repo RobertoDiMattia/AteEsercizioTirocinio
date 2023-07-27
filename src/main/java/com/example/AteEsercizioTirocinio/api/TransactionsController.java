@@ -20,7 +20,7 @@ public class TransactionsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TransactionDto> retrieveTransactionById(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionsService.retrieveTransactionById(id);
+        return ResponseEntity.ok(transactionsService.retrieveTransactionById(id));
     }
 
     @PutMapping("/{id}")

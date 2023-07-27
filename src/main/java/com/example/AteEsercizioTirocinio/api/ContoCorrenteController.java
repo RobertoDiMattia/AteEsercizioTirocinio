@@ -16,13 +16,13 @@ public class ContoCorrenteController {
     private ContoCorrenteService contoCorrenteService;
 
     @PostMapping("/create")
-    public ResponseEntity<ContoCorrente> addContoCorrente (@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
+    public ResponseEntity<ContoCorrente> addContoCorrente(@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
         return ResponseEntity.ok(contoCorrenteService.addContoCorrente(contoCorrenteDto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContoCorrenteDto> retrieveContoCorrenteById(@PathVariable Long id) {
-        return ResponseEntity.ok(contoCorrenteService.retrieveContoCorrenteById(id);
+        return ResponseEntity.ok(contoCorrenteService.retrieveContoCorrenteById(id));
     }
 
     @PutMapping("/{id}")
@@ -41,7 +41,7 @@ public class ContoCorrenteController {
     }
 
     @PostMapping("/withdrawl")
-    public ResponseEntity<TransactionDto> makeWithdrawl(@RequestBody @Valid TransactionDto transactionDto){
+    public ResponseEntity<ContoCorrente> makeWithdrawl(@RequestBody @Valid TransactionDto transactionDto){
         return ResponseEntity.ok(contoCorrenteService.makeWithdrawl(transactionDto));
     }
 
