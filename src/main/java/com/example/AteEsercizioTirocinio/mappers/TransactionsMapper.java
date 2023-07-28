@@ -1,13 +1,13 @@
 package com.example.AteEsercizioTirocinio.mappers;
 
 import com.example.AteEsercizioTirocinio.model.Transactions;
-import com.example.AteEsercizioTirocinio.transactionsDto.TransactionDto;
+import com.example.AteEsercizioTirocinio.DTO.TransactionDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface TransactionsMapper {
 
-    Transactions transactionDtoToTransaction(TransactionDto transactionDto);
+    Transactions DtoToEntity(TransactionDto transactionDto);
 
-    TransactionDto transactionToTransactionDto(Transactions transactions);
+    TransactionDto EntityToDto(Transactions transactions);
 }

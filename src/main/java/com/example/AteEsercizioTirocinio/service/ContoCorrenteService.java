@@ -1,32 +1,27 @@
 package com.example.AteEsercizioTirocinio.service;
 
+import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.ContoCorrenteMapper;
 import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.repository.ContoCorrenteRepository;
-import com.example.AteEsercizioTirocinio.transactionsDto.ContoCorrenteDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.AteEsercizioTirocinio.DTO.ContoCorrenteDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class ContoCorrenteService {
 
-    @Autowired
-
-    private ContoCorrenteRepository contoCorrenteRepository;
+    private final ContoCorrenteRepository contoCorrenteRepository;
 
     private final ContoCorrenteMapper contoCorrenteMapper;
 
-    public ContoCorrenteService(ContoCorrenteMapper contoCorrenteMapper) {
-        this.contoCorrenteMapper = contoCorrenteMapper;
-    }
-
     public ContoCorrente addContoCorrente(ContoCorrenteDto contoCorrenteDto) {
-        return contoCorrenteRepository.save(contoCorrenteMapper.contoCorrenteDtoToContoCorrente(contoCorrenteDto));
+        return contoCorrenteRepository.save(contoCorrenteMapper.DtoToEntity(contoCorrenteDto));
     }
 
     public ContoCorrente retrieveContoCorrenteById(Long id) {
-        return contoCorrenteRepository.retrieveByContoCorrenteId(id);
+        return contoCorrenteRepository.findById(id)
+                .orElseThrow(()-> new NotFoundException("contoCorrente not found whit id: " + id));
     }
 }

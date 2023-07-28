@@ -4,24 +4,23 @@ import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
-import com.example.AteEsercizioTirocinio.transactionsDto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.AteEsercizioTirocinio.DTO.UserDto;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    private final UserMapper userMapper;
-
-    public UserService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    private UserMapper userMapper;
 
     public User addUser(UserDto userDto) {
-        return userRepository.save(userMapper.userDtoToUser(userDto));
+        return userRepository.save(userMapper.DtoToEntity(userDto));
     }
 
     public User retrieveUserById(Long id) {
@@ -30,17 +29,12 @@ public class UserService {
     }
 
     public User updateUser(UserDto userDto) {
-        User user = userRepository.findById(userMapper.userDtoToUser(userDto).getId())
+        User user = userRepository.findById(userMapper.DtoToEntity(userDto).getId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         return userRepository.save(user);
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    public User retrieveUserByEmail(String email) {
-        return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 }

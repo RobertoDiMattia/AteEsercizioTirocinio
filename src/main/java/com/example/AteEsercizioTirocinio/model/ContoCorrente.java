@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -15,15 +15,13 @@ public class ContoCorrente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long userId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    private String transactionType;
-    private Double amount;
-    private Date dateTime;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "num_conto")
+    private UUID numConto;
 }

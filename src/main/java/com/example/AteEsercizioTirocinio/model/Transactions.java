@@ -15,14 +15,13 @@ public class Transactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contoCorrenteId;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "conto_corrente_id", referencedColumnName = "userId")
+    @JoinColumn(name = "num_conto_corrente", referencedColumnName = "num_conto")
     private ContoCorrente contoCorrente;
 
+    private double balance;
     private String transactionType;
-    private double amount;
     private Date dateTime;
-
 }

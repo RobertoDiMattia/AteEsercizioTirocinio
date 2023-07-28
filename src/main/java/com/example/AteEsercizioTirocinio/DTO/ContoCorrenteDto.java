@@ -1,8 +1,10 @@
-package com.example.AteEsercizioTirocinio.transactionsDto;
+package com.example.AteEsercizioTirocinio.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -10,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class ContoCorrenteDto {
 
     private Long id;
-    private double balance;
-    private String numConto;
+    private Long userId;
+    private UUID numConto;
 }

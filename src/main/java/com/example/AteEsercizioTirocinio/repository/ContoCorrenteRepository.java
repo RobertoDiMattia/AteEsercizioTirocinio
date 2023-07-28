@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContoCorrenteRepository extends JpaRepository<ContoCorrente, Long> {
 
-    ContoCorrente retrieveByContoCorrenteId(Long userId);
-
 }
