@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContoCorrenteRepository extends JpaRepository<ContoCorrente, Long> {
 
+    //    List<Transactions> findTop5ByNumContoCorrenteOrderByDateTimeDesc(String numConto);
+
+   // Transactions findByBalance(TransactionDto transactionDto);
 }

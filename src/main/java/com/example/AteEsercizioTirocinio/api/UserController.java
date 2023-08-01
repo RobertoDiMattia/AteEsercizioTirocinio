@@ -1,10 +1,9 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.service.UserService;
-import com.example.AteEsercizioTirocinio.DTO.UserDto;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<User> addUser(@RequestBody @Valid UserDto userDto){
@@ -25,9 +27,10 @@ public class UserController {
         return ResponseEntity.ok(userService.retrieveUserById(id));
     }
 
-    @PutMapping("/modifica")
-    public ResponseEntity<User> updateUser(@PathVariable @RequestBody UserDto userDto) {
+    @PutMapping("/update")
+    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(userDto));
+//        return null;
     }
 
     @DeleteMapping("/{id}")
@@ -35,5 +38,4 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
-
 }

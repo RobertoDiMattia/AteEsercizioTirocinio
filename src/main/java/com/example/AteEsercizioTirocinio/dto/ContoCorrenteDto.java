@@ -1,20 +1,14 @@
-package com.example.AteEsercizioTirocinio.model;
+package com.example.AteEsercizioTirocinio.dto;
 
-import jakarta.persistence.*;
+public class ContoCorrenteDto {
 
-@Entity
-public class ContoCorrente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long userId;
     private String pan;
 
-    public ContoCorrente() {}
+    public ContoCorrenteDto() {}
 
-    public ContoCorrente(Long id, Long userId, String pan) {
+    public ContoCorrenteDto(Long id, Long userId, String pan) {
         this.id = id;
         this.userId = userId;
         this.pan = pan;

@@ -1,10 +1,9 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.model.Transactions;
 import com.example.AteEsercizioTirocinio.service.TransactionsService;
-import com.example.AteEsercizioTirocinio.DTO.TransactionDto;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,47 +13,28 @@ import java.util.List;
 @RestController
 public class TransactionsController {
 
-    @Autowired
-    private TransactionsService transactionsService;
+    private final TransactionsService transactionsService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Transactions> addTransaction (@RequestBody @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(transactionsService.addTransaction(transactionDto));
+    public TransactionsController(TransactionsService transactionsService) {
+        this.transactionsService = transactionsService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Transactions> retrieveTransactionById(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionsService.retrieveTransactionById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Transactions> updateTransaction(@PathVariable Long id, @RequestBody TransactionDto transactionDto) {
-        return ResponseEntity.ok(transactionsService.updateTransaction(id, transactionDto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTransaction(@PathVariable Long id) {
-        transactionsService.deleteTransaction(id);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{pan}")
+    public ResponseEntity<List<Transactions>> retrieveTransactionById(@PathVariable String pan) {
+        return ResponseEntity.ok(transactionsService.retrieveTransactionById(pan));
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Transactions> makeDeposit(@RequestBody @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(transactionsService.makeDeposit(transactionDto));
+    public ResponseEntity<TransactionDto> makeDeposit(
+            @RequestParam @Valid String pan,
+            @RequestParam @Valid double amount
+    ){
+        return ResponseEntity.ok(transactionsService.makeDeposit(pan, amount));
     }
 
-    @PostMapping("/withdrawl")
-    public ResponseEntity<Transactions> makeWithdrawl(@RequestBody @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(transactionsService.makeWithdrawl(transactionDto));
-    }
+//    @PostMapping("/withdrawal")
+//    public ResponseEntity<Transactions> makeWithdrawal(@RequestBody @Valid TransactionDto transactionDto){
+//        return ResponseEntity.ok(transactionsService.makeWithdrawal(transactionDto));
+//    }
 
-    @GetMapping("/balance")
-    public ResponseEntity<Transactions> getBalance(@RequestParam @Valid TransactionDto transactionDto){
-        return ResponseEntity.ok(transactionsService.getBalance(transactionDto));
-    }
-
-    @GetMapping("/last5transactions")
-    public ResponseEntity<List<Transactions>> getLast5transactions(@RequestParam @Valid String numConto){
-        return ResponseEntity.ok(transactionsService.getLast5transactions(numConto));
-    }
 }

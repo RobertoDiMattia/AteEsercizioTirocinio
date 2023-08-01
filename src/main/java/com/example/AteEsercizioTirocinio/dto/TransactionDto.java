@@ -1,33 +1,26 @@
-package com.example.AteEsercizioTirocinio.model;
+package com.example.AteEsercizioTirocinio.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 import java.time.LocalDate;
 
-@Entity
-public class Transactions {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class TransactionDto {
 
     private String numConto;
-    private double balance;
     private String transactionType;
+
+    @Min(10)
+    private double balance;
+
     private LocalDate dateTime;
 
-    public Transactions() {}
+    public TransactionDto() {}
 
-    public Transactions(Long id, String numConto, double balance, String transactionType, LocalDate dateTime) {
-        this.id = id;
+    public TransactionDto(String numConto, String transactionType, double balance, LocalDate dateTime) {
         this.numConto = numConto;
-        this.balance = balance;
         this.transactionType = transactionType;
+        this.balance = balance;
         this.dateTime = dateTime;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNumConto() {
@@ -38,20 +31,20 @@ public class Transactions {
         this.numConto = numConto;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     public String getTransactionType() {
         return transactionType;
     }
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public LocalDate getDateTime() {
@@ -62,3 +55,4 @@ public class Transactions {
         this.dateTime = dateTime;
     }
 }
+

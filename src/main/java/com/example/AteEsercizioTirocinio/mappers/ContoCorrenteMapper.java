@@ -1,13 +1,13 @@
 package com.example.AteEsercizioTirocinio.mappers;
 
 import com.example.AteEsercizioTirocinio.model.ContoCorrente;
-import com.example.AteEsercizioTirocinio.DTO.ContoCorrenteDto;
+import com.example.AteEsercizioTirocinio.dto.ContoCorrenteDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ContoCorrenteMapper {
 
-    ContoCorrente DtoToEntity(ContoCorrenteDto contoCorrenteDto);
+    ContoCorrente dtoToEntity(ContoCorrenteDto contoCorrenteDto);
 
-    ContoCorrenteDto EntityToDto(ContoCorrente contoCorrente);
+    ContoCorrenteDto entityToDto(ContoCorrente contoCorrente);
 }

@@ -1,31 +1,16 @@
-package com.example.AteEsercizioTirocinio.model;
+package com.example.AteEsercizioTirocinio.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+public class UserDto {
 
-@Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    @NotBlank
     private String name;
-
-    @NotNull
-    @NotBlank
     private String lastName;
-
-    @NotBlank
-    @NotNull
     private String email;
 
-    public User() {}
+    public UserDto() {
+    }
 
-    public User(Long id, String name, String lastName, String email) {
+    public UserDto(Long id, String name, String lastName, String email) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -63,4 +48,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

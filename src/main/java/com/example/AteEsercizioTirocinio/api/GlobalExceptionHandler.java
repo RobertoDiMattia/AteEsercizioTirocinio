@@ -22,5 +22,4 @@ public class GlobalExceptionHandler extends RuntimeException{
     public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error 404: " + e.getMessage());
     }
-
 }

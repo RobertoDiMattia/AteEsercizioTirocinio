@@ -2,25 +2,48 @@ package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
+import com.example.AteEsercizioTirocinio.model.ContoCorrente;
+import com.example.AteEsercizioTirocinio.model.Transactions;
 import com.example.AteEsercizioTirocinio.model.User;
+import com.example.AteEsercizioTirocinio.dto.UserDto;
+import com.example.AteEsercizioTirocinio.repository.ContoCorrenteRepository;
+import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
-import com.example.AteEsercizioTirocinio.DTO.UserDto;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ContoCorrenteRepository contoCorrenteRepository;
+    private final TransactionsRepository transactionsRepository;
+    private final UserMapper userMapper;
 
-    private UserMapper userMapper;
+    public UserService(UserRepository userRepository, ContoCorrenteRepository contoCorrenteRepository, TransactionsRepository transactionsRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.contoCorrenteRepository = contoCorrenteRepository;
+        this.transactionsRepository = transactionsRepository;
+        this.userMapper = userMapper;
+    }
 
     public User addUser(UserDto userDto) {
-        return userRepository.save(userMapper.DtoToEntity(userDto));
+        var uuid = UUID.randomUUID().toString();
+        var user = userMapper.dtoToEntity(userDto);
+        userRepository.save(user);
+        var contoCorrente = new ContoCorrente();
+        contoCorrente.setPan(uuid);
+        contoCorrente.setUserId(user.getId());
+        contoCorrenteRepository.save(contoCorrente);
+        var transaction = new Transactions();
+        transaction.setNumConto(contoCorrente.getPan());
+        transaction.setBalance(0);
+        transaction.setDateTime(LocalDate.now());
+        transaction.setTransactionType("");
+        transactionsRepository.save(transaction);
+        return user;
     }
 
     public User retrieveUserById(Long id) {
@@ -29,9 +52,11 @@ public class UserService {
     }
 
     public User updateUser(UserDto userDto) {
-        User user = userRepository.findById(userMapper.DtoToEntity(userDto).getId())
+        var id = userDto.getId();
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
-        return userRepository.save(user);
+
+        return userRepository.save(userMapper.dtoToEntity(userDto));
     }
 
     public void deleteUser(Long id) {
