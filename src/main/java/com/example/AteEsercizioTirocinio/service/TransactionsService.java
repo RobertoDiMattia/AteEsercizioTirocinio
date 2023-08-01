@@ -1,44 +1,38 @@
 package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
-import com.example.AteEsercizioTirocinio.exceptions.BadRequestException;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.TransactionsMapper;
-import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.model.Transactions;
 import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionsService {
 
     private final TransactionsRepository transactionsRepository;
-
     private final TransactionsMapper transactionsMapper;
 
-    public TransactionsService(TransactionsRepository transactionsRepository, TransactionsMapper transactionsMapper) {
-        this.transactionsRepository = transactionsRepository;
-        this.transactionsMapper = transactionsMapper;
+    public List<TransactionDto> retrieveTransactionById(String iban) {
+        var transactions = transactionsRepository.findByNumContoOrderByNumContoDesc(iban);
+        return transactionsMapper.listEntityToListDto(transactions);
     }
 
+    public TransactionDto makeDeposit(String iban, double amount) {
 
-    public List<Transactions> retrieveTransactionById(String pan) {
-        return transactionsRepository.findByNumConto(pan);
-    }
-
-    public TransactionDto makeDeposit(String pan, double amount) {
-
-        var transactions = transactionsRepository.findByNumConto(pan);
-        var newTrasaction = new Transactions();
-        var transaction = transactions.stream().findFirst().orElseThrow(() -> new NotFoundException("No Pan Match"));
-            newTrasaction.setNumConto(pan);
-            newTrasaction.setTransactionType("deposit " + amount);
-            newTrasaction.setDateTime(LocalDate.now());
-            newTrasaction.setBalance(transaction.getBalance() + amount);
+        var transactions = transactionsRepository.findByNumContoOrderByNumContoDesc(iban);
+        var transaction = transactions.stream().findFirst().orElseThrow(() -> new NotFoundException("No iban Match"));
+        var newTrasaction = Transactions.builder()
+                .numConto(iban)
+                .transactionType("deposit " + amount)
+                .dateTime(LocalDate.now())
+                .balance((transaction.getBalance() + amount))
+                .build();
 
             transactionsRepository.save(newTrasaction);
 

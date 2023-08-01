@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TransactionsRepository extends JpaRepository<Transactions, Long> {
-    List<Transactions> findByNumConto(String pan);
+
+    List<Transactions> findByNumContoOrderByNumContoDesc(String iban);
 }

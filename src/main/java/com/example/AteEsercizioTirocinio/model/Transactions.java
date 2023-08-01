@@ -1,10 +1,18 @@
 package com.example.AteEsercizioTirocinio.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transactions {
 
     @Id
@@ -15,50 +23,4 @@ public class Transactions {
     private double balance;
     private String transactionType;
     private LocalDate dateTime;
-
-    public Transactions() {}
-
-    public Transactions(Long id, String numConto, double balance, String transactionType, LocalDate dateTime) {
-        this.id = id;
-        this.numConto = numConto;
-        this.balance = balance;
-        this.transactionType = transactionType;
-        this.dateTime = dateTime;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNumConto() {
-        return numConto;
-    }
-
-    public void setNumConto(String numConto) {
-        this.numConto = numConto;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public LocalDate getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDate dateTime) {
-        this.dateTime = dateTime;
-    }
 }

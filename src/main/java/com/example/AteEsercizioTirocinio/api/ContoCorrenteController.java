@@ -4,19 +4,16 @@ import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.service.ContoCorrenteService;
 import com.example.AteEsercizioTirocinio.dto.ContoCorrenteDto;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/contoCorrente")
 @RestController
+@RequiredArgsConstructor
 public class ContoCorrenteController {
 
     private final ContoCorrenteService contoCorrenteService;
-
-    public ContoCorrenteController(ContoCorrenteService contoCorrenteService) {
-        this.contoCorrenteService = contoCorrenteService;
-    }
-
 
     @PostMapping("/create")
     public ResponseEntity<ContoCorrente> addContoCorrente(@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){

@@ -9,12 +9,14 @@ import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.repository.ContoCorrenteRepository;
 import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
@@ -22,26 +24,21 @@ public class UserService {
     private final TransactionsRepository transactionsRepository;
     private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, ContoCorrenteRepository contoCorrenteRepository, TransactionsRepository transactionsRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.contoCorrenteRepository = contoCorrenteRepository;
-        this.transactionsRepository = transactionsRepository;
-        this.userMapper = userMapper;
-    }
-
     public User addUser(UserDto userDto) {
         var uuid = UUID.randomUUID().toString();
         var user = userMapper.dtoToEntity(userDto);
         userRepository.save(user);
-        var contoCorrente = new ContoCorrente();
-        contoCorrente.setPan(uuid);
-        contoCorrente.setUserId(user.getId());
+        var contoCorrente = ContoCorrente.builder()
+                .iban(uuid)
+                .userId(user.getId())
+                .build();
         contoCorrenteRepository.save(contoCorrente);
-        var transaction = new Transactions();
-        transaction.setNumConto(contoCorrente.getPan());
-        transaction.setBalance(0);
-        transaction.setDateTime(LocalDate.now());
-        transaction.setTransactionType("");
+        var transaction = Transactions.builder()
+                .numConto(contoCorrente.getIban())
+                .balance(0)
+                .dateTime(LocalDate.now())
+                .transactionType("")
+                .build();
         transactionsRepository.save(transaction);
         return user;
     }
