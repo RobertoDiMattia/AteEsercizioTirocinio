@@ -12,4 +12,5 @@ public class ContoCorrenteDto {
     private Long id;
     private Long userId;
     private String iban;
+    private double balance;
 }
