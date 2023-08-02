@@ -28,7 +28,6 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(userDto));
-//        return null;
     }
 
     @DeleteMapping("/{id}")

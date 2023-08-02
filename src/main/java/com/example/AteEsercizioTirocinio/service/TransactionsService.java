@@ -3,8 +3,10 @@ package com.example.AteEsercizioTirocinio.service;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.TransactionsMapper;
+import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.model.Transactions;
 import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -64,4 +66,27 @@ public class TransactionsService {
 
         return transactionsMapper.entityToDto(newTrasaction);
     }
+
+    public Transactions createFromContoCorrente(ContoCorrente conto) {
+        var transaction = Transactions.builder()
+                .numConto(conto.getIban())
+                .balance(0)
+                .dateTime(LocalDate.now())
+                .transactionType("")
+                .build();
+        return transactionsRepository.save(transaction);
+    }
+
+    public double retrieveBalance(String iban) {
+        var transactions = transactionsRepository.findByNumConto(iban);
+        var transaction = transactions.stream().findFirst()
+                .orElseThrow(() -> new NotFoundException("numConto not found with iban: " + iban));
+        return transaction.getBalance();
+    }
+
+    public List<TransactionDto> retrieveLastFiveTransactions(String iban) {
+        var transactions = transactionsRepository.findLastFiveTransaction(iban);
+        return transactionsMapper.listEntityToListDto(transactions);
+    }
+
 }

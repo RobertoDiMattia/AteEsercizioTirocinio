@@ -28,7 +28,7 @@ public class TransactionsController {
 
     @PostMapping("/deposit")
     public ResponseEntity<TransactionDto> makeDeposit(
-            @RequestParam @Valid String iban,
+            @RequestParam String iban,
             @RequestParam @Min(10) double amount
     ){
         return ResponseEntity.ok(transactionsService.makeDeposit(iban, amount));
@@ -36,7 +36,7 @@ public class TransactionsController {
 
     @PostMapping("/withdrawal")
     public ResponseEntity<TransactionDto> makeWithdrawal(
-            @RequestParam @Valid String iban,
+            @RequestParam String iban,
             @RequestParam @Min(10) double amount
     ){
         return ResponseEntity.ok(transactionsService.makeWithdrawal(iban, amount));
