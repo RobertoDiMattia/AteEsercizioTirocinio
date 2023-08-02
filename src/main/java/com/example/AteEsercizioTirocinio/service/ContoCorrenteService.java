@@ -35,7 +35,8 @@ public class ContoCorrenteService {
 
     public double retrieveBalance(String iban) {
         var transactions = transactionsRepository.findByNumConto(iban);
-        var transaction = transactions.stream().findFirst().orElseThrow();
+        var transaction = transactions.stream().findFirst()
+                .orElseThrow(() -> new NotFoundException("numConto not found with iban: " + iban));
         return transaction.getBalance();
     }
 
