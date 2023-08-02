@@ -1,5 +1,6 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.service.ContoCorrenteService;
 import com.example.AteEsercizioTirocinio.dto.ContoCorrenteDto;
@@ -7,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("api/contoCorrente")
 @RestController
@@ -25,16 +28,14 @@ public class ContoCorrenteController {
         return ResponseEntity.ok(contoCorrenteService.retrieveContoCorrenteById(id));
     }
 
-//    @GetMapping("/{id}/balance")
-//    public ResponseEntity<Double> getBalance(@PathVariable Long id) {
-//        double balance = contoCorrenteService.getBalance(id);
-//        return ResponseEntity.ok(balance);
-//    }
+    @GetMapping("/{iban}/balance")
+    public ResponseEntity<Double> getBalance(@PathVariable String iban) {
+        return ResponseEntity.ok(contoCorrenteService.retrieveBalance(iban));
+    }
 
-//    @GetMapping("/{id}/last5transactions")
-//    public ResponseEntity<List<TransactionDto>> getLast5Transactions(@PathVariable Long id) {
-//        List<TransactionDto> transactions = contoCorrenteService.getLast5Transactions(id);
-//        return ResponseEntity.ok(transactions);
-//    }
+    @GetMapping("/{iban}/last5transactions")
+    public ResponseEntity<List<TransactionDto>> getLast5Transactions(@PathVariable String iban) {
+        return ResponseEntity.ok(contoCorrenteService.retrieveLastFiveTransactions(iban));
+    }
 
 }

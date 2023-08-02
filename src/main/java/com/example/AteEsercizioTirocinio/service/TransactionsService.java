@@ -1,7 +1,6 @@
 package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
-import com.example.AteEsercizioTirocinio.exceptions.BadRequestException;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.TransactionsMapper;
 import com.example.AteEsercizioTirocinio.model.Transactions;
@@ -20,13 +19,13 @@ public class TransactionsService {
     private final TransactionsMapper transactionsMapper;
 
     public List<TransactionDto> retrieveTransactionById(String iban) {
-        var transactions = transactionsRepository.findByNumContoOrderByNumContoDesc(iban);
+        var transactions = transactionsRepository.findByNumConto(iban);
         return transactionsMapper.listEntityToListDto(transactions);
     }
 
     public TransactionDto makeDeposit(String iban, double amount) {
 
-        var transactions = transactionsRepository.findByNumContoOrderByNumContoDesc(iban);
+        var transactions = transactionsRepository.findByNumConto(iban);
         var transaction = transactions.stream().findFirst()
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
         transaction.setBalance(transaction.getBalance() + amount);
@@ -45,7 +44,7 @@ public class TransactionsService {
 
     public TransactionDto makeWithdrawal(String iban, double amount) {
 
-        var transactions = transactionsRepository.findByNumContoOrderByNumContoDesc(iban);
+        var transactions = transactionsRepository.findByNumConto(iban);
         var transaction = transactions.stream().findFirst()
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
 
