@@ -4,7 +4,12 @@ import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ContoCorrenteRepository extends JpaRepository<ContoCorrente, Long> {
+
+    //cambiato iban con id
+    Optional<ContoCorrente> findById(Long id);
 
 }

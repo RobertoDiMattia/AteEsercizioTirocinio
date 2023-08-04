@@ -11,8 +11,9 @@ import java.util.List;
 @Repository
 public interface TransactionsRepository extends JpaRepository<Transactions, Long> {
 
-    List<Transactions> findByNumConto(String iban);
+    List<Transactions> findByContoCorrenteId(Long id);
 
-    @Query(value = "SELECT * FROM Transactions WHERE num_conto = :iban ORDER BY id DESC LIMIT 5", nativeQuery = true)
-    List<Transactions> findLastFiveTransaction(@Param("iban") String iban);
+    @Query(value = "SELECT * FROM Transactions WHERE conto_corrente_id = :contoCorrenteId ORDER BY id DESC LIMIT 5", nativeQuery = true)
+    List<Transactions> findLastFiveTransactions(@Param("contoCorrenteId") Long contoCorrenteId);
+
 }

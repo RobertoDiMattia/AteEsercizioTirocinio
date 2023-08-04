@@ -20,15 +20,15 @@ public class User {
     @NotNull
     private Long id;
 
-    @NotNull
+    @OneToOne(mappedBy = "user")
+    private ContoCorrente contoCorrente;
+
     @NotBlank
     private String name;
 
-    @NotNull
     @NotBlank
     private String lastName;
 
-    @NotNull
     @NotBlank
     private String email;
 }

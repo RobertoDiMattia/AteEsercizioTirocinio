@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,10 +16,8 @@ public class ContoCorrenteDto {
     @NotNull
     private Long id;
 
-    @NotNull
-    private Long userId;
+    private List<TransactionDto> transactions;
 
-    @NotNull
     @NotBlank
     private String iban;
 

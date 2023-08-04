@@ -13,16 +13,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ContoCorrenteService contoCorrenteService;
-    private final TransactionsService transactionsService;
     private final UserMapper userMapper;
 
     public User addUser(UserDto userDto) {
-        var user = userMapper.dtoToEntity(userDto);
-        userRepository.save(user);
-        var conto = contoCorrenteService.createFromUser(user);
-        var transaction = transactionsService.createFromContoCorrente(conto);
-        return user;
+        return userRepository.save(userMapper.dtoToEntity(userDto));
     }
 
     public User retrieveUserById(Long id) {

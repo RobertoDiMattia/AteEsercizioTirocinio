@@ -1,7 +1,9 @@
 package com.example.AteEsercizioTirocinio.api;
 
+import com.example.AteEsercizioTirocinio.dto.ContoCorrenteCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.model.ContoCorrente;
+import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.service.ContoCorrenteService;
 import com.example.AteEsercizioTirocinio.dto.ContoCorrenteDto;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ public class ContoCorrenteController {
     private final ContoCorrenteService contoCorrenteService;
 
     @PostMapping("/create")
-    public ResponseEntity<ContoCorrente> addContoCorrente(@RequestBody @Valid ContoCorrenteDto contoCorrenteDto){
-        return ResponseEntity.ok(contoCorrenteService.addContoCorrente(contoCorrenteDto));
+    public ResponseEntity<ContoCorrente> addContoCorrente(@RequestBody @Valid ContoCorrenteCreationRequestDto contoCorrenteCreationRequestDto){
+        return ResponseEntity.ok(contoCorrenteService.addContoCorrente(contoCorrenteCreationRequestDto));
     }
 
     @GetMapping("/{id}")
@@ -28,14 +30,15 @@ public class ContoCorrenteController {
         return ResponseEntity.ok(contoCorrenteService.retrieveContoCorrenteById(id));
     }
 
-    @GetMapping("/{iban}/balance")
-    public ResponseEntity<Double> getBalance(@PathVariable String iban) {
-        return ResponseEntity.ok(contoCorrenteService.retrieveBalance(iban));
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<Double> getBalance(@PathVariable Long id) {
+        return ResponseEntity.ok(contoCorrenteService.retrieveBalanceByIban(id));
     }
 
-    @GetMapping("/{iban}/last5transactions")
-    public ResponseEntity<List<TransactionDto>> getLast5Transactions(@PathVariable String iban) {
-        return ResponseEntity.ok(contoCorrenteService.retrieveLastFiveTransactions(iban));
+
+    @GetMapping("/{id}/last5transactions")
+    public ResponseEntity<List<TransactionDto>> getLast5Transactions(@PathVariable Long id) {
+        return ResponseEntity.ok(contoCorrenteService.retrieveLastFiveTransactions(id));
     }
 
 }

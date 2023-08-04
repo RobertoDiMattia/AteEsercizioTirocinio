@@ -3,90 +3,76 @@ package com.example.AteEsercizioTirocinio.service;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.TransactionsMapper;
-import com.example.AteEsercizioTirocinio.model.ContoCorrente;
 import com.example.AteEsercizioTirocinio.model.Transactions;
+import com.example.AteEsercizioTirocinio.repository.ContoCorrenteRepository;
 import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionsService {
 
+    private final ContoCorrenteRepository contoCorrenteRepository;
     private final TransactionsRepository transactionsRepository;
     private final TransactionsMapper transactionsMapper;
 
-    public List<TransactionDto> retrieveTransactionById(String iban) {
-        var transactions = transactionsRepository.findByNumConto(iban);
+    //cambiato parametro e metodo findByIban con findByContoCorrenteId
+    public List<TransactionDto> retrieveTransactionById(Long id) {
+        var transactions = transactionsRepository.findByContoCorrenteId(id);
         return transactionsMapper.listEntityToListDto(transactions);
     }
 
-    public TransactionDto makeDeposit(String iban, double amount) {
-
-        var transactions = transactionsRepository.findByNumConto(iban);
-        var transaction = transactions.stream().findFirst()
+    public TransactionDto makeDeposit(Long id, double amount) {
+        var contiCorrenti = contoCorrenteRepository.findById(id);
+        var contoCorrente = contiCorrenti.stream().findFirst()
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
-        transaction.setBalance(transaction.getBalance() + amount);
-        transactionsRepository.save(transaction);
-        var newTrasaction = Transactions.builder()
-                .numConto(iban)
+
+        // Aggiorna il saldo
+        double newBalance = contoCorrente.getBalance() + amount;
+        contoCorrente.setBalance(newBalance);
+        contoCorrenteRepository.save(contoCorrente);
+
+        var newTransaction = Transactions.builder()
                 .transactionType("deposit " + amount)
-                .dateTime(LocalDate.now())
-                .balance(transaction.getBalance())
+                .dateTime(LocalDateTime.now())
                 .build();
 
-        transactionsRepository.save(newTrasaction);
-
-        return transactionsMapper.entityToDto(newTrasaction);
+        return transactionsMapper.entityToDto(newTransaction);
     }
 
-    public TransactionDto makeWithdrawal(String iban, double amount) {
-
-        var transactions = transactionsRepository.findByNumConto(iban);
-        var transaction = transactions.stream().findFirst()
+    public TransactionDto makeWithdrawal(Long id, double amount) {
+        var contiCorrenti = contoCorrenteRepository.findById(id);
+        var contoCorrente = contiCorrenti.stream().findFirst()
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
 
-        if(transaction.getBalance() < amount){
-            throw new IllegalArgumentException("the balance can't be lower than amount to withdraw");
+        if (contoCorrente.getBalance() < amount) {
+        throw new IllegalArgumentException("The balance can't be lower than the amount to withdraw");
         }
-        transaction.setBalance(transaction.getBalance() - amount);
-        transactionsRepository.save(transaction);
-        var newTrasaction = Transactions.builder()
-                .numConto(iban)
+        // Aggiorna il saldo
+        double newBalance = contoCorrente.getBalance() - amount;
+        contoCorrente.setBalance(newBalance);
+        contoCorrenteRepository.save(contoCorrente);
+
+        var newTransaction = Transactions.builder()
                 .transactionType("withdrawal " + amount)
-                .dateTime(LocalDate.now())
-                .balance(transaction.getBalance())
+                .dateTime(LocalDateTime.now())
                 .build();
-
-        transactionsRepository.save(newTrasaction);
-
-        return transactionsMapper.entityToDto(newTrasaction);
+        // transactionsRepository.save(newTransaction); (Non serve più)
+        return transactionsMapper.entityToDto(newTransaction);
     }
 
-    public Transactions createFromContoCorrente(ContoCorrente conto) {
-        var transaction = Transactions.builder()
-                .numConto(conto.getIban())
-                .balance(0)
-                .dateTime(LocalDate.now())
-                .transactionType("")
-                .build();
-        return transactionsRepository.save(transaction);
+    public double retrieveBalance(Long id) {
+        var contoCorrente = contoCorrenteRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not found with id: " + id));
+        return contoCorrente.getBalance();
     }
 
-    public double retrieveBalance(String iban) {
-        var transactions = transactionsRepository.findByNumConto(iban);
-        var transaction = transactions.stream().findFirst()
-                .orElseThrow(() -> new NotFoundException("numConto not found with iban: " + iban));
-        return transaction.getBalance();
-    }
-
-    public List<TransactionDto> retrieveLastFiveTransactions(String iban) {
-        var transactions = transactionsRepository.findLastFiveTransaction(iban);
+    public List<TransactionDto> retrieveLastFiveTransactions(Long contoCorrenteId) {
+        var transactions = transactionsRepository.findLastFiveTransactions(contoCorrenteId);
         return transactionsMapper.listEntityToListDto(transactions);
     }
-
 }

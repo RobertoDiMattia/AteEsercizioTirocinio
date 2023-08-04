@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,11 +22,17 @@ public class ContoCorrente {
     @NotNull
     private Long id;
 
-    @NotNull
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @NotNull
+    @OneToMany(mappedBy = "conto_corrente")
+    private List<Transactions> transactions;
+
     @NotBlank
     private String iban;
+
+    @NotNull
+    private double balance;
 
 }

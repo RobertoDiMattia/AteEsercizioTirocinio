@@ -2,7 +2,6 @@ package com.example.AteEsercizioTirocinio.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,20 +13,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TransactionDto {
 
-
     @NotNull
-    @NotBlank
-    private String numConto;
+    private Long id;
 
-    @NotNull
     @NotBlank
     private String transactionType;
 
     @NotNull
-    private double balance;
-
-    @NotNull
-    @Past
     private LocalDate dateTime;
+
 }
 
