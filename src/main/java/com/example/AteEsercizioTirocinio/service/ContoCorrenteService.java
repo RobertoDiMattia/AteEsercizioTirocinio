@@ -2,6 +2,7 @@ package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.ContoCorrenteCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
+import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.ContoCorrenteMapper;
 import com.example.AteEsercizioTirocinio.model.ContoCorrente;
@@ -23,32 +24,25 @@ public class ContoCorrenteService {
     private final ContoCorrenteMapper contoCorrenteMapper;
     private final UserRepository userRepository;
 
-//    public ContoCorrente addContoCorrente(ContoCorrenteCreationRequestDto contoCorrenteCreationRequestDto) {
-//        return contoCorrenteRepository.save(contoCorrenteMapper.dtoToEntity(contoCorrenteCreationRequestDto));
-//    }
-
     public ContoCorrente addContoCorrente(ContoCorrenteCreationRequestDto contoCorrenteCreationRequestDto) {
-        Long contoCorrenteId = contoCorrenteCreationRequestDto.getId();
-        if (contoCorrenteId == null) {
-            throw new IllegalArgumentException("you need id for create conto corrente");
-        }
+        var contoCorrenteId = contoCorrenteCreationRequestDto.getId();
 
         ContoCorrente contoCorrente = contoCorrenteRepository.findById(contoCorrenteId)
                 .orElseThrow(() -> new IllegalArgumentException("Conto corrente not found wiht id " + contoCorrenteId));
 
-        var userDto = contoCorrente.getUser();
-        if (userDto == null) {
-            throw new IllegalArgumentException("User information is missing in the request.");
+        var userDto = contoCorrenteCreationRequestDto.getUser();
+        if(userDto != null){
+            return contoCorrente;
         }
 
         var user = new User();  // Creazione di un nuovo utente
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
+        user.setId(contoCorrenteCreationRequestDto.getId());
+        user.setName(contoCorrenteCreationRequestDto.getName());
+        user.setLastName(contoCorrenteCreationRequestDto.getLastName());
+        user.setEmail(contoCorrenteCreationRequestDto.getEmail());
 
-        //problemi con il builder
-//        User user = new User.UserBuilder()
+
+//        var user = new UserDto().builder()
 //                .id(userDto.getId())
 //                .name(userDto.getName())
 //                .lastName(userDto.getLastName())

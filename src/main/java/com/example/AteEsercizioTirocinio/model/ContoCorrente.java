@@ -34,5 +34,4 @@ public class ContoCorrente {
 
     @NotNull
     private double balance;
-
 }
