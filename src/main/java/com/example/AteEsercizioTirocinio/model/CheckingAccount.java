@@ -1,6 +1,7 @@
 package com.example.AteEsercizioTirocinio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContoCorrente {
+public class CheckingAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +27,9 @@ public class ContoCorrente {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "conto_corrente")
-    private List<Transactions> transactions;
+    @NotEmpty
+    @OneToMany(mappedBy = "checking_account")
+    private List<Transaction> transactions;
 
     @NotBlank
     private String iban;

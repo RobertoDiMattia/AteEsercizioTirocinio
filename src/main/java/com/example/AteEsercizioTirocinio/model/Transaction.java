@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transactions {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,12 +24,20 @@ public class Transactions {
 
     @ManyToOne
     @JoinColumn(name = "conto_corrente", referencedColumnName = "id")
-    private ContoCorrente contoCorrente;
+    private CheckingAccount checkingAccount;
 
-    @NotBlank
-    private String transactionType;
+    public enum Type {
+        DEPOSIT,
+        WITHDRAWAL
+    }
+
+    @NotNull
+    public Type type;
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+
+    @NotNull
+    private double amount;
 
 }

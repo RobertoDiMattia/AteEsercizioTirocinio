@@ -21,10 +21,10 @@ public class User {
     private Long id;
 
     @OneToOne(mappedBy = "user")
-    private ContoCorrente contoCorrente;
+    private CheckingAccount checkingAccount;
 
     @NotBlank
-    private String name;
+    private String firstName;
 
     @NotBlank
     private String lastName;
