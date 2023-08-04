@@ -22,7 +22,6 @@ public class ContoCorrenteService {
     private final ContoCorrenteRepository contoCorrenteRepository;
     private final TransactionsService transactionsService;
     private final ContoCorrenteMapper contoCorrenteMapper;
-    private final UserRepository userRepository;
 
     public ContoCorrente addContoCorrente(ContoCorrenteCreationRequestDto contoCorrenteCreationRequestDto) {
         var contoCorrenteId = contoCorrenteCreationRequestDto.getId();
@@ -34,12 +33,6 @@ public class ContoCorrenteService {
         if(userDto != null){
             return contoCorrente;
         }
-
-//        var user = new User();  // Creazione di un nuovo utente
-//        user.setId(contoCorrenteCreationRequestDto.getId());
-//        user.setName(contoCorrenteCreationRequestDto.getName());
-//        user.setLastName(contoCorrenteCreationRequestDto.getLastName());
-//        user.setEmail(contoCorrenteCreationRequestDto.getEmail());
 
         var user = User.builder()
                 .id(contoCorrenteCreationRequestDto.getId())
