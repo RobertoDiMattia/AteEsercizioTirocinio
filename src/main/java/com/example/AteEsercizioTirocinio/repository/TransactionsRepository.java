@@ -13,7 +13,4 @@ public interface TransactionsRepository extends JpaRepository<Transaction, Long>
 
     List<Transaction> findByContoCorrenteId(Long id);
 
-    @Query(value = "SELECT * FROM Transactions WHERE conto_corrente_id = :contoCorrenteId ORDER BY id DESC LIMIT 5", nativeQuery = true)
-    List<Transaction> findLastFiveTransactions(@Param("contoCorrenteId") Long contoCorrenteId);
-
 }
