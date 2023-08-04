@@ -35,19 +35,18 @@ public class ContoCorrenteService {
             return contoCorrente;
         }
 
-        var user = new User();  // Creazione di un nuovo utente
-        user.setId(contoCorrenteCreationRequestDto.getId());
-        user.setName(contoCorrenteCreationRequestDto.getName());
-        user.setLastName(contoCorrenteCreationRequestDto.getLastName());
-        user.setEmail(contoCorrenteCreationRequestDto.getEmail());
+//        var user = new User();  // Creazione di un nuovo utente
+//        user.setId(contoCorrenteCreationRequestDto.getId());
+//        user.setName(contoCorrenteCreationRequestDto.getName());
+//        user.setLastName(contoCorrenteCreationRequestDto.getLastName());
+//        user.setEmail(contoCorrenteCreationRequestDto.getEmail());
 
-
-//        var user = new UserDto().builder()
-//                .id(userDto.getId())
-//                .name(userDto.getName())
-//                .lastName(userDto.getLastName())
-//                .email(userDto.getEmail())
-//                .build();
+        var user = User.builder()
+                .id(contoCorrenteCreationRequestDto.getId())
+                .name(contoCorrenteCreationRequestDto.getName())
+                .lastName(contoCorrenteCreationRequestDto.getLastName())
+                .email(contoCorrenteCreationRequestDto.getEmail())
+                .build();
 
         contoCorrente.setUser(user);
         return contoCorrenteRepository.save(contoCorrente);
