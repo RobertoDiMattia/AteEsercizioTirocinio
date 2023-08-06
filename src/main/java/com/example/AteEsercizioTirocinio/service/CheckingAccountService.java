@@ -49,7 +49,7 @@ public class CheckingAccountService {
         return checkingAccount.getBalance();
     }
 
-    public List<TransactionDto> retrieveLastFiveTransactions(Long id) {
+    public List<CheckingAccountDto> retrieveLastFiveTransactions(Long id) {
         var checkingAccount = checkingAccountRepository.findLastFiveTransactions(id);
         return checkingAccountMapper.listEntityToListDto(checkingAccount);
 

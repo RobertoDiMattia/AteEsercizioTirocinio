@@ -14,5 +14,5 @@ public interface CheckingAccountMapper {
 
     CheckingAccountDto entityToDto(CheckingAccount checkingAccount);
 
-    List<CheckingAccountDto> listEntityToListDto(List<CheckingAccount> checkingAccount);
+    List<CheckingAccountDto> listEntityToListDto(List<TransactionDto> transactionDtoList);
 }
