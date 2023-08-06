@@ -30,12 +30,12 @@ public class TransactionsService {
         var checkingAccount = checkingAccounts.stream().findFirst()
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
 
-        double newBalance = checkingAccount.getBalance() + amount;
+        var newBalance = checkingAccount.getBalance() + amount;
         checkingAccount.setBalance(newBalance);
         checkingAccountRepository.save(checkingAccount);
 
         var newTransaction = Transaction.builder()
-                .type(Transaction.Type.DEPOSIT)
+                .type(Transaction.Type.DEPOSIT.getValue())
                 .amount(amount)
                 .dateTime(LocalDateTime.now())
                 .build();
@@ -56,7 +56,7 @@ public class TransactionsService {
         checkingAccountRepository.save(contoCorrente);
 
         var newTransaction = Transaction.builder()
-                .type(Transaction.Type.WITHDRAWAL)
+                .type(Transaction.Type.WITHDRAWAL.getValue())
                 .amount(amount)
                 .dateTime(LocalDateTime.now())
                 .build();

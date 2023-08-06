@@ -3,10 +3,7 @@ package com.example.AteEsercizioTirocinio.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -23,16 +20,8 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "conto_corrente", referencedColumnName = "id")
+    @JoinColumn(name = "checking_account", referencedColumnName = "id")
     private CheckingAccount checkingAccount;
-
-    public enum Type {
-        DEPOSIT,
-        WITHDRAWAL
-    }
-
-    @NotNull
-    public Type type;
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
@@ -40,4 +29,15 @@ public class Transaction {
     @NotNull
     private double amount;
 
+    @NotNull
+    public String type;
+
+    @Getter
+    @AllArgsConstructor
+    public enum Type {
+        DEPOSIT("Deposit"),
+        WITHDRAWAL("Withdrawal");
+
+        private final String value;
+    }
 }
