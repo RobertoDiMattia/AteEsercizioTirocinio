@@ -1,6 +1,5 @@
 package com.example.AteEsercizioTirocinio.dto;
 
-import com.example.AteEsercizioTirocinio.model.Transaction;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +16,8 @@ public class TransactionDto {
     @NotNull
     private Long id;
 
-//    @NotNull
-//    private Transactions.Type type;
-
     @NotBlank
-    private Transaction.Type type;
+    private String type;
 
     @NotNull
     private LocalDate dateTime;
