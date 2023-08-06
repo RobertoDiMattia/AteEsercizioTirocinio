@@ -14,6 +14,6 @@ public interface CheckingAccountRepository extends JpaRepository<CheckingAccount
 
     Optional<CheckingAccount> findById(Long id);
 
-    @Query(value = "SELECT * FROM Transactions WHERE conto_corrente_id = :contoCorrenteId ORDER BY id DESC LIMIT 5", nativeQuery = true)
-    List<TransactionDto> findLastFiveTransactions(Long contoCorrenteId);
+    @Query(value = "SELECT * FROM Transactions WHERE checking_account_id = :checking_account_id ORDER BY id DESC LIMIT 5", nativeQuery = true)
+    List<TransactionDto> findLastFiveTransactions(Long checkingAccountId);
 }

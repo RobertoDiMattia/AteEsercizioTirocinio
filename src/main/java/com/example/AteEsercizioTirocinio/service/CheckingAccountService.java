@@ -25,9 +25,9 @@ public class CheckingAccountService {
     private final CheckingAccountCreationRequestMapper checkingAccountCreationRequestMapper;
 
     public CheckingAccount addContoCorrente(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
-        Long userId = checkingAccountCreationRequestDto.getUserId();
+        var userId = checkingAccountCreationRequestDto.getUserId();
 
-        User user = userRepository.findById(userId)
+        var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id " + userId));
 
         var checkingAccount = checkingAccountCreationRequestMapper.creationRequestDtoToEntity(checkingAccountCreationRequestDto);
@@ -37,7 +37,7 @@ public class CheckingAccountService {
     }
 
     public CheckingAccountDto retrieveContoCorrenteById(Long id) {
-        CheckingAccount checkingAccount = checkingAccountRepository.findById(id)
+        var checkingAccount = checkingAccountRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("c/c not found whit id: " + id));
 
         return checkingAccountMapper.entityToDto(checkingAccount);
