@@ -1,9 +1,9 @@
 package com.example.AteEsercizioTirocinio.service;
 
+import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
 import com.example.AteEsercizioTirocinio.model.User;
-import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +26,10 @@ public class UserService {
 
     public User updateUser(UserDto userDto) {
         var id = userDto.getId();
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User not found");
+        }
 
         return userRepository.save(userMapper.dtoToEntity(userDto));
     }
