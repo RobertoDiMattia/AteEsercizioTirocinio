@@ -52,6 +52,13 @@ class UserServiceTest {
 
     @Test
     void updateUser() {
+        when(userRepository.findById(any())).thenReturn(Optional.ofNullable(getUser()));
+        var out = userService.retrieveUserById(3L);
+
+//        assertEquals(1L, out.getId());
+//        assertEquals(1L, out.getFirstName());
+//        assertEquals(1L, out.getLastName());
+//        assertEquals(1L, out.getEmail();
     }
 
     @Test
