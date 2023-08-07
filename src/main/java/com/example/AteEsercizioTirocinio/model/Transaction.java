@@ -1,7 +1,6 @@
 package com.example.AteEsercizioTirocinio.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -20,7 +19,7 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "checking_account", referencedColumnName = "id")
+    @JoinColumn(name = "checking_account_id", referencedColumnName = "id")
     private CheckingAccount checkingAccount;
 
     @Column(name = "date_time")
@@ -30,14 +29,13 @@ public class Transaction {
     private double amount;
 
     @NotNull
-    public String type;
+    public Type type;
 
     @Getter
     @AllArgsConstructor
     public enum Type {
-        DEPOSIT("Deposit"),
-        WITHDRAWAL("Withdrawal");
+        DEPOSIT,
+        WITHDRAWAL
 
-        private final String value;
     }
 }

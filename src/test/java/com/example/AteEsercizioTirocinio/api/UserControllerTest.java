@@ -32,7 +32,7 @@ class UserControllerTest {
         var user = new User();
         when(userService.addUser(userDto)).thenReturn(user);
         ResponseEntity<User> response = userController.addUser(userDto);   // Esecuzione
-        assertEquals(HttpStatus.OK, response.getStatusCode());             // Verifica
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
         verify(userService).addUser(userDto);
         // Verifica che il metodo del servizio è stato chiamato con l'argomento corretto
@@ -64,7 +64,6 @@ class UserControllerTest {
     @Test
     void deleteUser() {
         Long userId = 1L;
-
         ResponseEntity response = userController.deleteUser(userId);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(userService).deleteUser(userId);

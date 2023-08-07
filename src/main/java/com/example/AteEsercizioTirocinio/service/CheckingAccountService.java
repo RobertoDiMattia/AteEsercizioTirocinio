@@ -1,19 +1,18 @@
 package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
-import com.example.AteEsercizioTirocinio.dto.TransactionDto;
+import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountCreationRequestMapper;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
-import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
-import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +23,35 @@ public class CheckingAccountService {
     private final UserRepository userRepository;
     private final CheckingAccountCreationRequestMapper checkingAccountCreationRequestMapper;
 
-    public CheckingAccount addContoCorrente(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
+    public CheckingAccount addCheckingAccount(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         var userId = checkingAccountCreationRequestDto.getUserId();
 
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id " + userId));
+                .orElseThrow(() -> new NotFoundException("User not found with id " + userId));
+
+        String iban = generateIban();
 
         var checkingAccount = checkingAccountCreationRequestMapper.creationRequestDtoToEntity(checkingAccountCreationRequestDto);
         checkingAccount.setUser(user);
+        checkingAccount.setIban(iban);
 
         return checkingAccountRepository.save(checkingAccount);
     }
 
+    private String generateIban() {
+        var random = new Random();
+
+        String countryCode = "IT";
+        String bankCode = String.format("%05d", random.nextInt(100000));
+        String branchCode = String.format("%05d", random.nextInt(100000));
+        String accountNumber = String.format("%010d", random.nextLong());
+
+        return countryCode + bankCode + branchCode + accountNumber;
+    }
+
     public CheckingAccountDto retrieveContoCorrenteById(Long id) {
         var checkingAccount = checkingAccountRepository.findById(id)
-                .orElseThrow(()-> new NotFoundException("c/c not found whit id: " + id));
+                .orElseThrow(() -> new NotFoundException("c/c not found whit id: " + id));
 
         return checkingAccountMapper.entityToDto(checkingAccount);
     }

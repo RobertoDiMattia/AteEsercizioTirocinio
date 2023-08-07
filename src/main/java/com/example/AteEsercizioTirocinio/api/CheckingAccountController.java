@@ -1,8 +1,7 @@
 package com.example.AteEsercizioTirocinio.api;
 
-import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
-import com.example.AteEsercizioTirocinio.dto.TransactionDto;
+import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.service.CheckingAccountService;
 import jakarta.validation.Valid;
@@ -21,7 +20,7 @@ public class CheckingAccountController {
 
     @PostMapping("/create")
     public ResponseEntity<CheckingAccount> addContoCorrente(@RequestBody @Valid CheckingAccountCreationRequestDto checkingAccountCreationRequestDto){
-        return ResponseEntity.ok(checkingAccountService.addContoCorrente(checkingAccountCreationRequestDto));
+        return ResponseEntity.ok(checkingAccountService.addCheckingAccount(checkingAccountCreationRequestDto));
     }
 
     @GetMapping("/{id}")

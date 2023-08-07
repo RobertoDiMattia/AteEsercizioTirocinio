@@ -26,16 +26,15 @@ public class TransactionService {
     }
 
     public TransactionDto makeDeposit(Long id, double amount) {
-        var checkingAccounts = checkingAccountRepository.findById(id);
-        var checkingAccount = checkingAccounts.stream().findFirst()
+        var checkingAccounts = checkingAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
 
-        var newBalance = checkingAccount.getBalance() + amount;
-        checkingAccount.setBalance(newBalance);
-        checkingAccountRepository.save(checkingAccount);
+        var newBalance = checkingAccounts.getBalance() + amount;
+        checkingAccounts.setBalance(newBalance);
+        checkingAccountRepository.save(checkingAccounts);
 
         var newTransaction = Transaction.builder()
-                .type(Transaction.Type.DEPOSIT.getValue())
+                .type(Transaction.Type.DEPOSIT)
                 .amount(amount)
                 .dateTime(LocalDateTime.now())
                 .build();
@@ -43,20 +42,19 @@ public class TransactionService {
     }
 
     public TransactionDto makeWithdrawal(Long id, double amount) {
-        var contiCorrenti = checkingAccountRepository.findById(id);
-        var contoCorrente = contiCorrenti.stream().findFirst()
+        var checkingAccounts = checkingAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("No iban Match"));
 
-        if (contoCorrente.getBalance() < amount) {
-        throw new IllegalArgumentException("The balance can't be lower than the amount to withdraw");
+        if (checkingAccounts.getBalance() < amount) {
+            throw new IllegalArgumentException("The balance can't be lower than the amount to withdraw");
         }
 
-        double newBalance = contoCorrente.getBalance() - amount;
-        contoCorrente.setBalance(newBalance);
-        checkingAccountRepository.save(contoCorrente);
+        double newBalance = checkingAccounts.getBalance() - amount;
+        checkingAccounts.setBalance(newBalance);
+        checkingAccountRepository.save(checkingAccounts);
 
         var newTransaction = Transaction.builder()
-                .type(Transaction.Type.WITHDRAWAL.getValue())
+                .type(Transaction.Type.WITHDRAWAL)
                 .amount(amount)
                 .dateTime(LocalDateTime.now())
                 .build();

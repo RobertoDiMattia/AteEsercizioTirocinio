@@ -28,7 +28,7 @@ public class CheckingAccount {
     private User user;
 
     @NotEmpty
-    @OneToMany(mappedBy = "checking_account")
+    @OneToMany(mappedBy = "checkingAccount")
     private List<Transaction> transactions;
 
     @NotBlank
