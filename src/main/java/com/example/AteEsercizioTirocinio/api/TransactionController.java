@@ -1,10 +1,8 @@
 package com.example.AteEsercizioTirocinio.api;
 
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
-import com.example.AteEsercizioTirocinio.service.TransactionsService;
-
+import com.example.AteEsercizioTirocinio.service.TransactionService;
 import jakarta.validation.constraints.Min;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +12,13 @@ import java.util.List;
 @RequestMapping("api/transactions")
 @RestController
 @RequiredArgsConstructor
-public class TransactionsController {
+public class TransactionController {
 
-    private final TransactionsService transactionsService;
+    private final TransactionService transactionService;
 
     @GetMapping("/{contoCorrenteId}")
     public ResponseEntity<List<TransactionDto>> retrieveTransactionById(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionsService.retrieveTransactionById(id));
+        return ResponseEntity.ok(transactionService.retrieveTransactionById(id));
     }
 
     @PostMapping("/deposit")
@@ -28,7 +26,7 @@ public class TransactionsController {
             @RequestParam Long id,
             @RequestParam @Min(10) double amount
     ){
-        return ResponseEntity.ok(transactionsService.makeDeposit(id, amount));
+        return ResponseEntity.ok(transactionService.makeDeposit(id, amount));
     }
 
     @PostMapping("/withdrawal")
@@ -36,7 +34,7 @@ public class TransactionsController {
             @RequestParam Long id,
             @RequestParam @Min(10) double amount
     ){
-        return ResponseEntity.ok(transactionsService.makeWithdrawal(id, amount));
+        return ResponseEntity.ok(transactionService.makeWithdrawal(id, amount));
     }
 
 }

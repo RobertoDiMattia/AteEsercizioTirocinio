@@ -5,7 +5,7 @@ import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.TransactionsMapper;
 import com.example.AteEsercizioTirocinio.model.Transaction;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
-import com.example.AteEsercizioTirocinio.repository.TransactionsRepository;
+import com.example.AteEsercizioTirocinio.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TransactionsService {
+public class TransactionService {
 
     private final CheckingAccountRepository checkingAccountRepository;
-    private final TransactionsRepository transactionsRepository;
+    private final TransactionRepository transactionRepository;
     private final TransactionsMapper transactionsMapper;
 
     public List<TransactionDto> retrieveTransactionById(Long id) {
-        var transactions = transactionsRepository.findByContoCorrenteId(id);
+        var transactions = transactionRepository.findByContoCorrenteId(id);
         return transactionsMapper.listEntityToListDto(transactions);
     }
 
