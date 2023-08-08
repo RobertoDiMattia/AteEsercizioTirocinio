@@ -21,9 +21,6 @@ class CheckingAccountServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private CheckingAccountCreationRequestMapper checkingAccountCreationRequestMapper;
-
     @InjectMocks
     private CheckingAccountService checkingAccountService;
 
