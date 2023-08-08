@@ -1,5 +1,6 @@
 package com.example.AteEsercizioTirocinio.mappers;
 
+import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
@@ -10,9 +11,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CheckingAccountMapper {
 
-    CheckingAccount dtoToEntity(CheckingAccountDto checkingAccountDto);
-
     CheckingAccountDto entityToDto(CheckingAccount checkingAccount);
 
     List<CheckingAccountDto> listEntityToListDto(List<TransactionDto> transactionDtoList);
+
+    CheckingAccount creationRequestDtoToEntity(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto);
+
 }

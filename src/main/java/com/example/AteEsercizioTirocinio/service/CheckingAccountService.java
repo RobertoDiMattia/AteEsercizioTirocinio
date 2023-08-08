@@ -3,7 +3,6 @@ package com.example.AteEsercizioTirocinio.service;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
-import com.example.AteEsercizioTirocinio.mappers.CheckingAccountCreationRequestMapper;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
@@ -21,7 +20,6 @@ public class CheckingAccountService {
     private final CheckingAccountRepository checkingAccountRepository;
     private final CheckingAccountMapper checkingAccountMapper;
     private final UserRepository userRepository;
-    private final CheckingAccountCreationRequestMapper checkingAccountCreationRequestMapper;
 
     public CheckingAccount addCheckingAccount(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         var userId = checkingAccountCreationRequestDto.getUserId();
@@ -31,7 +29,7 @@ public class CheckingAccountService {
 
         String iban = generateIban();
 
-        var checkingAccount = checkingAccountCreationRequestMapper.creationRequestDtoToEntity(checkingAccountCreationRequestDto);
+        var checkingAccount = checkingAccountMapper.creationRequestDtoToEntity(checkingAccountCreationRequestDto);
         checkingAccount.setUser(user);
         checkingAccount.setIban(iban);
 

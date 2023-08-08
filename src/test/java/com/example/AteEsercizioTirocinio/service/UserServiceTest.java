@@ -32,6 +32,8 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    //testare anche i path dove ci sono le eccezioni
+    //convenzione di scrittura dei nomi dei metodi di test
     @Test
     void addUser() {
         when(userRepository.save(any())).thenReturn(getUser());

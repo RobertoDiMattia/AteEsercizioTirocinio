@@ -16,5 +16,4 @@ public class CheckingAccountCreationRequestDto {
 
     @NotBlank
     private String iban;
-
 }
