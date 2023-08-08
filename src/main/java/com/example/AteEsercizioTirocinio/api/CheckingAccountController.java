@@ -2,7 +2,6 @@ package com.example.AteEsercizioTirocinio.api;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
-import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.service.CheckingAccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class CheckingAccountController {
     private final CheckingAccountService checkingAccountService;
 
     @PostMapping("/create")
-    public ResponseEntity<CheckingAccount> addContoCorrente(@RequestBody @Valid CheckingAccountCreationRequestDto checkingAccountCreationRequestDto){
+    public ResponseEntity<CheckingAccountDto> addContoCorrente(@RequestBody @Valid CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         return ResponseEntity.ok(checkingAccountService.addCheckingAccount(checkingAccountCreationRequestDto));
     }
 
@@ -30,7 +29,7 @@ public class CheckingAccountController {
 
     @GetMapping("/{id}/balance")
     public ResponseEntity<Double> getBalance(@PathVariable Long id) {
-        return ResponseEntity.ok(checkingAccountService.retrieveBalanceByIban(id));
+        return ResponseEntity.ok(checkingAccountService.retrieveBalanceById(id));
     }
 
     @GetMapping("/{id}/last5transactions")

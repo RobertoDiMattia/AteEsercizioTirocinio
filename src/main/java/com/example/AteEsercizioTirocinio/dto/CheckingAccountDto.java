@@ -17,6 +17,9 @@ public class CheckingAccountDto {
     @NotNull
     private Long id;
 
+    @NotNull
+    private Long UserId;
+
     @NotEmpty
     private List<TransactionDto> transactions;
 

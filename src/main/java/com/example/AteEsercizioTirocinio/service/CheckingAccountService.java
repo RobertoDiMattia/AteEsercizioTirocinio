@@ -4,7 +4,6 @@ import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
-import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class CheckingAccountService {
     private final CheckingAccountMapper checkingAccountMapper;
     private final UserRepository userRepository;
 
-    public CheckingAccount addCheckingAccount(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
+    public CheckingAccountDto addCheckingAccount(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         var userId = checkingAccountCreationRequestDto.getUserId();
 
         var user = userRepository.findById(userId)
@@ -33,10 +32,10 @@ public class CheckingAccountService {
         checkingAccount.setUser(user);
         checkingAccount.setIban(iban);
 
-        return checkingAccountRepository.save(checkingAccount);
+        return checkingAccountMapper.entityToDto(checkingAccountRepository.save(checkingAccount));
     }
 
-    private String generateIban() {
+    String generateIban() {
         var random = new Random();
 
         String countryCode = "IT";
@@ -54,7 +53,7 @@ public class CheckingAccountService {
         return checkingAccountMapper.entityToDto(checkingAccount);
     }
 
-    public double retrieveBalanceByIban(Long id) {
+    public double retrieveBalanceById(Long id) {
         var checkingAccount = checkingAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found with id: " + id));
         return checkingAccount.getBalance();
