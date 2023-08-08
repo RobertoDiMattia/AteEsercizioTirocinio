@@ -17,6 +17,9 @@ public class TransactionDto {
     @NotNull
     private Long id;
 
+    @NotNull
+    private Long checkingAccountId;
+
     @NotBlank
     private Transaction.Type type;
 

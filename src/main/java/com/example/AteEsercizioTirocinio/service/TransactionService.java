@@ -20,10 +20,11 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final TransactionsMapper transactionsMapper;
 
-    public List<TransactionDto> retrieveTransactionById(Long id) {
-        var transactions = transactionRepository.findByContoCorrenteId(id);
+    public List<TransactionDto> retrieveTransactionByCheckingAccountId(Long checkingAccountId) {
+        var transactions = transactionRepository.findByCheckingAccountId(checkingAccountId);
         return transactionsMapper.listEntityToListDto(transactions);
     }
+
 
     public TransactionDto makeDeposit(Long id, double amount) {
         var checkingAccounts = checkingAccountRepository.findById(id)

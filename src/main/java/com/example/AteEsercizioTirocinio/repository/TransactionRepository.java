@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findByContoCorrenteId(Long id);
+    List<Transaction> findByCheckingAccountId(Long checkingAccountId);
 
 }

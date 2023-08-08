@@ -16,16 +16,16 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping("/{contoCorrenteId}")
-    public ResponseEntity<List<TransactionDto>> retrieveTransactionById(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionService.retrieveTransactionById(id));
+    @GetMapping("/{checkingAccount}")
+    public ResponseEntity<List<TransactionDto>> retrieveTransactionByCheckingAccountId(@PathVariable Long checkingAccount) {
+        return ResponseEntity.ok(transactionService.retrieveTransactionByCheckingAccountId(checkingAccount));
     }
 
     @PostMapping("/deposit")
     public ResponseEntity<TransactionDto> makeDeposit(
             @RequestParam Long id,
             @RequestParam @Min(10) double amount
-    ){
+    ) {
         return ResponseEntity.ok(transactionService.makeDeposit(id, amount));
     }
 
