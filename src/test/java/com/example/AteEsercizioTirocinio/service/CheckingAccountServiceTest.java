@@ -2,6 +2,7 @@ package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.model.User;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,11 +57,12 @@ class CheckingAccountServiceTest {
                 .email(EMAIL)
                 .build();
         when(userRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.of(user));
-        String generatedIban = "IT12345678910111213";
+        String generatedIban = IBAN;
         when(checkingAccountService.generateIban()).thenReturn(generatedIban);
         CheckingAccount checkingAccount = CheckingAccount.builder()
                 .user(user)
                 .iban(generatedIban)
+                .transactions(Collections.emptyList())
                 .balance(0.0)
                 .build();
         when(checkingAccountMapper.creationRequestDtoToEntity(creationRequestDto)).thenReturn(checkingAccount);
@@ -126,7 +129,7 @@ class CheckingAccountServiceTest {
         List<CheckingAccount> transactions = new ArrayList<>();
         transactions.add(checkingAccount);
         when(checkingAccountRepository.findLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID))
-                .thenReturn(transactions);
+                .thenReturn((List<TransactionDto>) checkingAccount);
         List<CheckingAccountDto> transactionDtos = new ArrayList<>();
         when(checkingAccountMapper.listEntityToListDto(transactions)).thenReturn(transactionDtos);
         List<CheckingAccountDto> retrievedTransactions =
@@ -141,21 +144,4 @@ class CheckingAccountServiceTest {
         verify(checkingAccountMapper, times(1)).listEntityToListDto(transactions);
     }
 
-    private User getUser() {
-        return User.builder()
-                .id(EXISTING_USER_ID)
-                .email(EMAIL)
-                .firstName(FIRST_NAME)
-                .lastName(LAST_NAME)
-                .build();
-    }
-
-    private CheckingAccount getCheckingAccount() {
-        return CheckingAccount.builder()
-                .id(EXISTING_CHECKING_ACCOUNT_ID)
-                .iban(IBAN)
-                .balance(BALANCE)
-                .build();
-
-    }
 }
