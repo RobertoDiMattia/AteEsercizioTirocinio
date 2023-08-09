@@ -25,7 +25,6 @@ public class TransactionService {
         return transactionsMapper.listEntityToListDto(transactions);
     }
 
-
     public TransactionDto makeDeposit(Long id, double amount) {
         var checkingAccounts = checkingAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("No iban Match"));

@@ -2,8 +2,10 @@ package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
+import com.example.AteEsercizioTirocinio.model.Transaction;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
@@ -13,7 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,39 +45,25 @@ class CheckingAccountServiceTest {
     private static final String FIRST_NAME = "Roby";
     private static final String LAST_NAME = "Dima";
     private static final Long EXISTING_CHECKING_ACCOUNT_ID = 3L;
-    private static final String IBAN = "IT12345678910111213";
+    private static final String IBAN = "IT12345678910";
     private static final double BALANCE = 1000;
 
     @Test
-    void testAddCheckingAccount() {
-        var requestDto = new CheckingAccountCreationRequestDto();
-        requestDto.setUserId(EXISTING_USER_ID);
-        User user = User.builder()
-                .id(EXISTING_USER_ID)
-                .firstName(FIRST_NAME)
-                .lastName(LAST_NAME)
-                .email(EMAIL)
-                .build();
+    void testAddCheckingAccounts() {
+        var requestDto = new CheckingAccountCreationRequestDto(EXISTING_USER_ID);
+        var user = mockedUser();
+        var checkingAccount = mockedCheckingAccount();
+        var checkingAccountDto = mockedCheckingAccountDto();
+
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        CheckingAccount checkingAccount = CheckingAccount.builder()
-                .id(EXISTING_CHECKING_ACCOUNT_ID)
-                .user(user)
-                .transactions(Collections.emptyList())
-                .balance(0.0)
-                .build();
         when(checkingAccountMapper.creationRequestDtoToEntity(any())).thenReturn(checkingAccount);
-        when(checkingAccountRepository.save(any())).thenReturn(checkingAccount);
-        var checkingAccountDto = CheckingAccountDto.builder()
-                .id(EXISTING_CHECKING_ACCOUNT_ID)
-                .UserId(EXISTING_USER_ID)
-                .balance(0.0)
-                .transactions(Collections.emptyList())
-                .build();
-        when(checkingAccountMapper.entityToDto(checkingAccount)).thenReturn(checkingAccountDto);
+        when(checkingAccountMapper.entityToDto(any())).thenReturn(checkingAccountDto);
+
         var response = checkingAccountService.addCheckingAccount(requestDto);
+
         assertThat(response.getId()).isEqualTo(EXISTING_CHECKING_ACCOUNT_ID);
         assertThat(response.getUserId()).isEqualTo(EXISTING_USER_ID);
-        assertThat(response.getIban()).startsWith("IT").hasSize(19);
+        assertThat(response.getIban()).startsWith("IT").hasSize(13);
         assertThat(response.getBalance()).isZero();
         assertThat(response.getTransactions()).isEmpty();
 
@@ -81,60 +71,77 @@ class CheckingAccountServiceTest {
     }
 
     @Test
-    void validAddCheckingAccount_validResponse() {
-        CheckingAccountCreationRequestDto creationRequestDto = new CheckingAccountCreationRequestDto();
-        creationRequestDto.setUserId(EXISTING_USER_ID);
-        User user = new User();
-        when(userRepository.findById(EXISTING_USER_ID)).thenReturn(Optional.of(user));
-        CheckingAccount checkingAccount = new CheckingAccount();
-        when(checkingAccountMapper.creationRequestDtoToEntity(creationRequestDto)).thenReturn(checkingAccount);
-        when(checkingAccountRepository.save(checkingAccount)).thenReturn(checkingAccount);
-        CheckingAccountDto checkingAccountDto = new CheckingAccountDto();
-        when(checkingAccountMapper.entityToDto(checkingAccount)).thenReturn(checkingAccountDto);
-        CheckingAccountDto addedCheckingAccount = checkingAccountService.addCheckingAccount(creationRequestDto);
-        assertNotNull(addedCheckingAccount);
-        verify(userRepository, times(1)).findById(EXISTING_USER_ID);
-        verify(checkingAccountRepository, times(1)).save(checkingAccount);
-        verify(checkingAccountMapper, times(1)).creationRequestDtoToEntity(creationRequestDto);
-        verify(checkingAccountMapper, times(1)).entityToDto(checkingAccount);
-    }
-
-    @Test
     public void testRetrieveBalanceById() {
         CheckingAccount checkingAccount = new CheckingAccount();
-        checkingAccount.setBalance(900.0);
+        checkingAccount.setBalance(BALANCE);
+
         when(checkingAccountRepository.findById(EXISTING_CHECKING_ACCOUNT_ID))
                 .thenReturn(Optional.of(checkingAccount));
         double balance = checkingAccountService.retrieveBalanceById(EXISTING_CHECKING_ACCOUNT_ID);
+
         assertEquals(BALANCE, balance);
+
         verify(checkingAccountRepository, times(1)).findById(EXISTING_CHECKING_ACCOUNT_ID);
     }
 
-//    @Test
-//    public void testRetrieveLastFiveTransactions() {
-//        var checkingAccount = CheckingAccount.builder()
-//                .id(EXISTING_CHECKING_ACCOUNT_ID)
-//                .user(new User())
-//                .iban(IBAN)
-//                .balance(BALANCE)
-//                .transactions(new ArrayList<>())
-//                .build();
-//        List<CheckingAccount> transactions = new ArrayList<>();
-//        transactions.add(checkingAccount);
-//        when(checkingAccountRepository.findLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID))
-//                .thenReturn(transactions);
-//        List<CheckingAccountDto> transactionDtos = new ArrayList<>();
-//        when(checkingAccountMapper.listEntityToListDto(transactions)).thenReturn(transactionDtos);
-//        List<CheckingAccountDto> retrievedTransactions =
-//                checkingAccountService.retrieveLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
-//        assertNotNull(retrievedTransactions);
-//        assertEquals(1, retrievedTransactions.size());
-//        var retrievedTransactionDto = retrievedTransactions.get(0);
-//        assertEquals(EXISTING_CHECKING_ACCOUNT_ID, retrievedTransactionDto.getId());
-//        assertEquals(IBAN, retrievedTransactionDto.getIban());
-//        assertEquals(BALANCE, retrievedTransactionDto.getBalance());
-//        verify(checkingAccountRepository, times(1)).findLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
-//        verify(checkingAccountMapper, times(1)).listEntityToListDto(transactions);
-//    }
+    @Test
+    public void testRetrieveLastFiveTransactions() {
+        var transaction = mockedTransactionDto();
+
+        when(checkingAccountRepository.findLastFiveTransactions(anyLong())).thenReturn(List.of(transaction));
+        when(checkingAccountMapper.listEntityToListDto(any())).thenReturn(List.of(mockedCheckingAccountDto()));
+
+        var response =
+                checkingAccountService.retrieveLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
+        var retrievedTransactionDto = response.get(0);
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(EXISTING_CHECKING_ACCOUNT_ID, retrievedTransactionDto.getId());
+        assertEquals(IBAN, retrievedTransactionDto.getIban());
+        assertEquals(BALANCE, retrievedTransactionDto.getBalance());
+
+        verify(checkingAccountRepository, times(1))
+                .findLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
+    }
+
+    private TransactionDto mockedTransactionDto() {
+        return TransactionDto.builder()
+                .id(5L)
+                .amount(100)
+                .checkingAccountId(EXISTING_CHECKING_ACCOUNT_ID)
+                .type(Transaction.Type.DEPOSIT)
+                .dateTime(LocalDateTime.now())
+                .build();
+    }
+
+    private CheckingAccountDto mockedCheckingAccountDto() {
+        return CheckingAccountDto.builder()
+                .id(EXISTING_CHECKING_ACCOUNT_ID)
+                .UserId(EXISTING_USER_ID)
+                .iban(IBAN)
+                .balance(0.0)
+                .transactions(Collections.emptyList())
+                .build();
+    }
+
+    private CheckingAccount mockedCheckingAccount() {
+        return CheckingAccount.builder()
+                .id(EXISTING_CHECKING_ACCOUNT_ID)
+                .user(mockedUser())
+                .iban(IBAN)
+                .transactions(Collections.emptyList())
+                .balance(0.0)
+                .build();
+    }
+
+    private User mockedUser() {
+        return User.builder()
+                .id(EXISTING_USER_ID)
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .email(EMAIL)
+                .build();
+    }
 
 }

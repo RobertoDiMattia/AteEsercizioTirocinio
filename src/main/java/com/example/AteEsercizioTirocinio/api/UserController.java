@@ -1,6 +1,7 @@
 package com.example.AteEsercizioTirocinio.api;
 
-import com.example.AteEsercizioTirocinio.dto.UserDto;
+import com.example.AteEsercizioTirocinio.dto.UserCreationRequestDto;
+import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.service.UserService;
 import jakarta.validation.Valid;
@@ -15,9 +16,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
-    public ResponseEntity<User> addUser(@RequestBody @Valid UserDto userDto){
-        return ResponseEntity.ok(userService.addUser(userDto));
+    @PostMapping()
+    public ResponseEntity<User> addUser(@RequestBody @Valid UserCreationRequestDto userCreationRequestDto) {
+        return ResponseEntity.ok(userService.addUser(userCreationRequestDto));
     }
 
     @GetMapping("/{id}")
@@ -25,9 +26,9 @@ public class UserController {
         return ResponseEntity.ok(userService.retrieveUserById(id));
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(userDto));
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserEditDto userEditDto) {
+        return ResponseEntity.ok(userService.updateUser(id, userEditDto));
     }
 
     @DeleteMapping("/{id}")

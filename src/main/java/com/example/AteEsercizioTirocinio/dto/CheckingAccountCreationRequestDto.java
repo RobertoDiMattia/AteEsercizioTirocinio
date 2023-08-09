@@ -12,5 +12,4 @@ public class CheckingAccountCreationRequestDto {
 
     @NotNull
     private Long userId;
-
 }

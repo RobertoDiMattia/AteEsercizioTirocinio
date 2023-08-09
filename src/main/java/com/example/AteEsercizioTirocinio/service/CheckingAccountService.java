@@ -35,7 +35,7 @@ public class CheckingAccountService {
         return checkingAccountMapper.entityToDto(checkingAccountRepository.save(checkingAccount));
     }
 
-    String generateIban() {
+    private String generateIban() {
         var random = new Random();
 
         String countryCode = "IT";
@@ -62,6 +62,5 @@ public class CheckingAccountService {
     public List<CheckingAccountDto> retrieveLastFiveTransactions(Long id) {
         var checkingAccount = checkingAccountRepository.findLastFiveTransactions(id);
         return checkingAccountMapper.listEntityToListDto(checkingAccount);
-
     }
 }

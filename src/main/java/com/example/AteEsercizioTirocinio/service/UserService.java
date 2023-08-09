@@ -1,6 +1,7 @@
 package com.example.AteEsercizioTirocinio.service;
 
-import com.example.AteEsercizioTirocinio.dto.UserDto;
+import com.example.AteEsercizioTirocinio.dto.UserCreationRequestDto;
+import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
 import com.example.AteEsercizioTirocinio.model.User;
@@ -15,8 +16,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public User addUser(UserDto userDto) {
-        return userRepository.save(userMapper.dtoToEntity(userDto));
+    public User addUser(UserCreationRequestDto userCreationRequestDto) {
+        return userRepository.save(userMapper.dtoToEntity(userCreationRequestDto));
     }
 
     public User retrieveUserById(Long id) {
@@ -24,14 +25,13 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
-    public User updateUser(UserDto userDto) {
-        var id = userDto.getId();
+    public User updateUser(Long id, UserEditDto userEditDto) {
 
         if (!userRepository.existsById(id)) {
             throw new NotFoundException("User not found");
         }
 
-        return userRepository.save(userMapper.dtoToEntity(userDto));
+        return userRepository.save(userMapper.dtoToEntity(userEditDto));
     }
 
     public void deleteUser(Long id) {
