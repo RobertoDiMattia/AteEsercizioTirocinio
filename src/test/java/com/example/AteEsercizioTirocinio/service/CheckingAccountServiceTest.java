@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -79,7 +80,11 @@ class CheckingAccountServiceTest {
         assertEquals(generatedIban, response.getIban());
         assertEquals(0.0, response.getBalance());
         //oppure
-        assertThat()
+        assertThat(response.getId()).isEqualTo(EXISTING_CHECKING_ACCOUNT_ID);
+        assertThat(response.getUserId()).isEqualTo(EXISTING_USER_ID);
+        assertThat(response.getIban()).startsWith("IT").hasSize(19);
+        assertThat(response.getBalance()).isZero();
+        assertThat(response.getTransactions()).isEmpty();
 
         verify(userRepository, times(1)).findById(EXISTING_USER_ID);
         verify(checkingAccountRepository, times(1)).save(checkingAccount);
