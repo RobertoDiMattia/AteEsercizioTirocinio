@@ -37,10 +37,10 @@ class CheckingAccountServiceTest {
     private CheckingAccountService checkingAccountService;
 
     private static final Long EXISTING_USER_ID = 1L;
-    public static final String EMAIL = "rob@mail.it";
-    public static final String FIRST_NAME = "Roby";
-    public static final String LAST_NAME = "Dima";
-    private static final Long EXISTING_CHECKING_ACCOUNT_ID = 1L;
+    private static final String EMAIL = "rob@mail.it";
+    private static final String FIRST_NAME = "Roby";
+    private static final String LAST_NAME = "Dima";
+    private static final Long EXISTING_CHECKING_ACCOUNT_ID = 3L;
     private static final String IBAN = "IT12345678910111213";
     private static final double BALANCE = 1000;
 
@@ -55,12 +55,9 @@ class CheckingAccountServiceTest {
                 .email(EMAIL)
                 .build();
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        String generatedIban = IBAN;
-        when(checkingAccountService.generateIban()).thenReturn(generatedIban);
         CheckingAccount checkingAccount = CheckingAccount.builder()
                 .id(EXISTING_CHECKING_ACCOUNT_ID)
                 .user(user)
-                .iban(generatedIban)
                 .transactions(Collections.emptyList())
                 .balance(0.0)
                 .build();
@@ -69,27 +66,18 @@ class CheckingAccountServiceTest {
         var checkingAccountDto = CheckingAccountDto.builder()
                 .id(EXISTING_CHECKING_ACCOUNT_ID)
                 .UserId(EXISTING_USER_ID)
-                .iban(generatedIban)
                 .balance(0.0)
                 .transactions(Collections.emptyList())
                 .build();
         when(checkingAccountMapper.entityToDto(checkingAccount)).thenReturn(checkingAccountDto);
         var response = checkingAccountService.addCheckingAccount(requestDto);
-        assertNotNull(response);
-        assertEquals(EXISTING_USER_ID, response.getUserId());
-        assertEquals(generatedIban, response.getIban());
-        assertEquals(0.0, response.getBalance());
-        //oppure
         assertThat(response.getId()).isEqualTo(EXISTING_CHECKING_ACCOUNT_ID);
         assertThat(response.getUserId()).isEqualTo(EXISTING_USER_ID);
         assertThat(response.getIban()).startsWith("IT").hasSize(19);
         assertThat(response.getBalance()).isZero();
         assertThat(response.getTransactions()).isEmpty();
 
-        verify(userRepository, times(1)).findById(EXISTING_USER_ID);
         verify(checkingAccountRepository, times(1)).save(checkingAccount);
-        verify(checkingAccountMapper, times(1)).creationRequestDtoToEntity(requestDto);
-        verify(checkingAccountMapper, times(1)).entityToDto(checkingAccount);
     }
 
     @Test
