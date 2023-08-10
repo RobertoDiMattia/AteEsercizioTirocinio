@@ -17,7 +17,7 @@ public class CheckingAccountController {
 
     private final CheckingAccountService checkingAccountService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CheckingAccountDto> addContoCorrente(@RequestBody @Valid CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         return ResponseEntity.ok(checkingAccountService.addCheckingAccount(checkingAccountCreationRequestDto));
     }

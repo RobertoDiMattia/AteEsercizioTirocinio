@@ -63,8 +63,8 @@ class CheckingAccountServiceTest {
 
         assertThat(response.getId()).isEqualTo(EXISTING_CHECKING_ACCOUNT_ID);
         assertThat(response.getUserId()).isEqualTo(EXISTING_USER_ID);
-        assertThat(response.getIban()).startsWith("IT").hasSize(13);
-        assertThat(response.getBalance()).isZero();
+        assertThat(response.getIban()).startsWith("IT").hasSize(13).isEqualTo(IBAN);
+        assertThat(response.getBalance()).isEqualTo(BALANCE);
         assertThat(response.getTransactions()).isEmpty();
 
         verify(checkingAccountRepository, times(1)).save(checkingAccount);
@@ -120,7 +120,7 @@ class CheckingAccountServiceTest {
                 .id(EXISTING_CHECKING_ACCOUNT_ID)
                 .UserId(EXISTING_USER_ID)
                 .iban(IBAN)
-                .balance(0.0)
+                .balance(BALANCE)
                 .transactions(Collections.emptyList())
                 .build();
     }
@@ -131,7 +131,7 @@ class CheckingAccountServiceTest {
                 .user(mockedUser())
                 .iban(IBAN)
                 .transactions(Collections.emptyList())
-                .balance(0.0)
+                .balance(BALANCE)
                 .build();
     }
 

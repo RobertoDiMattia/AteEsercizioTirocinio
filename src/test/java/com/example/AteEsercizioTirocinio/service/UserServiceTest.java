@@ -1,6 +1,7 @@
 package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.UserCreationRequestDto;
+import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
@@ -37,24 +38,33 @@ class UserServiceTest {
 
     @Test
     public void testAddUser() {
-        UserCreationRequestDto userCreationRequestDto = new UserCreationRequestDto();
+        var userCreationRequestDto = new UserCreationRequestDto();
         userCreationRequestDto.setFirstName(FIRST_NAME);
         userCreationRequestDto.setLastName(LAST_NAME);
         userCreationRequestDto.setEmail(EMAIL);
-        User user = new User();
 
-        when(userMapper.dtoToEntity(userCreationRequestDto)).thenReturn(user);
-        when(userRepository.save(user)).thenReturn(user);
+        var userDto = new UserDto();
+        userDto.setFirstName(FIRST_NAME);
+        userDto.setLastName(LAST_NAME);
+        userDto.setEmail(EMAIL);
 
-        User addedUser = userService.addUser(userCreationRequestDto);
+        when(userMapper.creationDtoToEntity(any())).thenReturn(new User());
+        when(userMapper.entityToDto(any())).thenReturn(userDto);
 
+        var addedUser = userService.addUser(userCreationRequestDto);
+
+        assertThat(addedUser).isNotNull();
+        assertThat(addedUser.getFirstName()).isEqualTo(FIRST_NAME);
+        assertThat(addedUser.getLastName()).isEqualTo(LAST_NAME);
+        assertThat(addedUser.getEmail()).isEqualTo(EMAIL);
+
+        //esercitazione
         assertNotNull(addedUser);
         assertEquals(FIRST_NAME, addedUser.getFirstName());
         assertEquals(LAST_NAME, addedUser.getLastName());
         assertEquals(EMAIL, addedUser.getEmail());
 
-        verify(userMapper, times(1)).dtoToEntity(userCreationRequestDto);
-        verify(userRepository, times(1)).save(user);
+        verify(userMapper, times(1)).creationDtoToEntity(userCreationRequestDto);
     }
 
     @Test
@@ -62,9 +72,14 @@ class UserServiceTest {
         Long userId = EXISTING_USER_ID;
         User userEntity = new User();
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        User result = userService.retrieveUserById(userId);
+
+        UserDto result = userService.retrieveUserById(userId);
+
         assertNotNull(result);
-        assertEquals(userEntity, result);
+        assertThat(result.getId()).isEqualTo(EXISTING_USER_ID);
+
+        //ESERCITAZIONE
+        assertEquals(EXISTING_USER_ID, result.getId());
     }
 
     @Test
@@ -81,13 +96,13 @@ class UserServiceTest {
     @Test
     public void testUpdateUserFound() {
         var editDto = mockedUserEditDto();
-        User user = new User();
+        var user = mockedUser();
 
-        when(userMapper.dtoToEntity(any(UserEditDto.class))).thenReturn(user);
+        when(userMapper.editDtoToEntity(any(UserEditDto.class))).thenReturn(user);
         when(userRepository.existsById(EXISTING_USER_ID)).thenReturn(true);
         when(userRepository.save(user)).thenReturn(user);
 
-        User updatedUser = userService.updateUser(EXISTING_USER_ID, editDto);
+        UserDto updatedUser = userService.updateUser(EXISTING_USER_ID, editDto);
 
         assertThat(updatedUser).isNotNull();
         assertThat(updatedUser.getId()).isEqualTo(EXISTING_USER_ID);
@@ -114,7 +129,7 @@ class UserServiceTest {
         verify(userRepository, times(1)).deleteById(EXISTING_USER_ID);
     }
 
-    private User getUser() {
+    private User mockedUser() {
         return User.builder()
                 .id(EXISTING_USER_ID)
                 .email(EMAIL)

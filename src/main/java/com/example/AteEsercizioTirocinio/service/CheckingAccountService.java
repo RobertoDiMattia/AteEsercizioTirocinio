@@ -22,7 +22,6 @@ public class CheckingAccountService {
 
     public CheckingAccountDto addCheckingAccount(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto) {
         var userId = checkingAccountCreationRequestDto.getUserId();
-
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id " + userId));
 

@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreationRequestDto {
+public class UserDto {
+
+    @NotNull
+    private Long id;
 
     @NotBlank
     private String firstName;
@@ -21,7 +24,4 @@ public class UserCreationRequestDto {
 
     @NotBlank
     private String email;
-
-    @NotNull
-    private Long checkingAccountId;
 }
