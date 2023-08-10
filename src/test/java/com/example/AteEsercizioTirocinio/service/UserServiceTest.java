@@ -38,7 +38,7 @@ class UserServiceTest {
 
     @Test
     public void testAddUser() {
-        var userCreationRequestDto = new UserCreationRequestDto();
+        UserCreationRequestDto userCreationRequestDto = new UserCreationRequestDto();
         userCreationRequestDto.setFirstName(FIRST_NAME);
         userCreationRequestDto.setLastName(LAST_NAME);
         userCreationRequestDto.setEmail(EMAIL);
