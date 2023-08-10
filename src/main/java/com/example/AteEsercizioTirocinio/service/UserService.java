@@ -17,7 +17,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     public User addUser(UserCreationRequestDto userCreationRequestDto) {
-        return userRepository.save(userMapper.dtoToEntity(userCreationRequestDto));
+        return userRepository.save(userMapper.creationDtoToEntity(userCreationRequestDto));
     }
 
     public User retrieveUserById(Long id) {
@@ -31,7 +31,7 @@ public class UserService {
             throw new NotFoundException("User not found");
         }
 
-        return userRepository.save(userMapper.dtoToEntity(userEditDto));
+        return userRepository.save(userMapper.editDtoToEntity(userEditDto));
     }
 
     public void deleteUser(Long id) {

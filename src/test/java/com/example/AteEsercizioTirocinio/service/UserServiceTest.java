@@ -41,19 +41,25 @@ class UserServiceTest {
         userCreationRequestDto.setFirstName(FIRST_NAME);
         userCreationRequestDto.setLastName(LAST_NAME);
         userCreationRequestDto.setEmail(EMAIL);
-        User user = new User();
+        var user = mockedUser();
 
-        when(userMapper.dtoToEntity(userCreationRequestDto)).thenReturn(user);
-        when(userRepository.save(user)).thenReturn(user);
+        when(userMapper.creationDtoToEntity(userCreationRequestDto)).thenReturn(user);
+        when(userRepository.save(any())).thenReturn(user);
 
         User addedUser = userService.addUser(userCreationRequestDto);
 
+        assertThat(addedUser).isNotNull();
+        assertThat(addedUser.getFirstName()).isEqualTo(FIRST_NAME);
+        assertThat(addedUser.getLastName()).isEqualTo(LAST_NAME);
+        assertThat(addedUser.getEmail()).isEqualTo(EMAIL);
+
+        //esercitazione
         assertNotNull(addedUser);
         assertEquals(FIRST_NAME, addedUser.getFirstName());
         assertEquals(LAST_NAME, addedUser.getLastName());
         assertEquals(EMAIL, addedUser.getEmail());
 
-        verify(userMapper, times(1)).dtoToEntity(userCreationRequestDto);
+        verify(userMapper, times(1)).creationDtoToEntity(userCreationRequestDto);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -62,7 +68,9 @@ class UserServiceTest {
         Long userId = EXISTING_USER_ID;
         User userEntity = new User();
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+
         User result = userService.retrieveUserById(userId);
+
         assertNotNull(result);
         assertEquals(userEntity, result);
     }
@@ -81,9 +89,9 @@ class UserServiceTest {
     @Test
     public void testUpdateUserFound() {
         var editDto = mockedUserEditDto();
-        User user = new User();
+        var user = mockedUser();
 
-        when(userMapper.dtoToEntity(any(UserEditDto.class))).thenReturn(user);
+        when(userMapper.editDtoToEntity(any(UserEditDto.class))).thenReturn(user);
         when(userRepository.existsById(EXISTING_USER_ID)).thenReturn(true);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -114,7 +122,7 @@ class UserServiceTest {
         verify(userRepository, times(1)).deleteById(EXISTING_USER_ID);
     }
 
-    private User getUser() {
+    private User mockedUser() {
         return User.builder()
                 .id(EXISTING_USER_ID)
                 .email(EMAIL)
