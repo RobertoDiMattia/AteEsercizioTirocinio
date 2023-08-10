@@ -30,12 +30,11 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    public static final String EMAIL = "rob@mail.it";
-    public static final String FIRST_NAME = "Roby";
-    public static final String LAST_NAME = "Dima";
+    private static final String EMAIL = "rob@mail.it";
+    private static final String FIRST_NAME = "Roby";
+    private static final String LAST_NAME = "Dima";
     private static final Long EXISTING_USER_ID = 1L;
 
-    //fatto senza var per senpai che li odia xD
     @Test
     public void testAddUser() {
         UserCreationRequestDto userCreationRequestDto = new UserCreationRequestDto();
@@ -53,6 +52,7 @@ class UserServiceTest {
         assertEquals(FIRST_NAME, addedUser.getFirstName());
         assertEquals(LAST_NAME, addedUser.getLastName());
         assertEquals(EMAIL, addedUser.getEmail());
+
         verify(userMapper, times(1)).dtoToEntity(userCreationRequestDto);
         verify(userRepository, times(1)).save(user);
     }
@@ -70,15 +70,17 @@ class UserServiceTest {
     @Test
     public void testRetrieveUserByIdNotFound() {
         Long userId = 2L;
+
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
         assertThrows(NotFoundException.class, () -> userService.retrieveUserById(userId));
+
         verify(userRepository, times(1)).findById(userId);
     }
 
     @Test
     public void testUpdateUserFound() {
         var editDto = mockedUserEditDto();
-
         User user = new User();
 
         when(userMapper.dtoToEntity(any(UserEditDto.class))).thenReturn(user);
@@ -92,14 +94,6 @@ class UserServiceTest {
         assertThat(updatedUser.getFirstName()).isEqualTo(editDto.getFirstName());
         assertThat(updatedUser.getLastName()).isEqualTo(editDto.getLastName());
         assertThat(updatedUser.getEmail()).isEqualTo(editDto.getEmail());
-    }
-
-    private UserEditDto mockedUserEditDto() {
-        return UserEditDto.builder()
-                .firstName(FIRST_NAME)
-                .lastName(LAST_NAME)
-                .email(EMAIL)
-                .build();
     }
 
     @Test
@@ -126,6 +120,14 @@ class UserServiceTest {
                 .email(EMAIL)
                 .firstName(FIRST_NAME)
                 .lastName(LAST_NAME)
+                .build();
+    }
+
+    private UserEditDto mockedUserEditDto() {
+        return UserEditDto.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .email(EMAIL)
                 .build();
     }
 }
