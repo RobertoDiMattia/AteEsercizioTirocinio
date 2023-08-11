@@ -69,16 +69,16 @@ class UserServiceTest {
 
     @Test
     public void testRetrieveUserById_UserFound() {
-        Long userId = EXISTING_USER_ID;
-        User userEntity = new User();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+        var user = mockedUser();
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
-        UserDto result = userService.retrieveUserById(userId);
+        var result = userService.retrieveUserById(EXISTING_USER_ID);
 
-        assertNotNull(result);
+        assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(EXISTING_USER_ID);
 
         //ESERCITAZIONE
+        assertNotNull(result);
         assertEquals(EXISTING_USER_ID, result.getId());
     }
 
