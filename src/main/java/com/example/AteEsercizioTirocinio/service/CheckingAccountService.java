@@ -45,7 +45,7 @@ public class CheckingAccountService {
         return countryCode + bankCode + branchCode + accountNumber;
     }
 
-    public CheckingAccountDto retrieveContoCorrenteById(Long id) {
+    public CheckingAccountDto retrieveCheckingAccountById(Long id) {
         var checkingAccount = checkingAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("c/c not found whit id: " + id));
 

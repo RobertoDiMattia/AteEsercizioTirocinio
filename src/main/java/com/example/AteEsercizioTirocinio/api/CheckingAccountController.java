@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("api/contoCorrente")
+@RequestMapping("api/checkingAccount")
 @RestController
 @RequiredArgsConstructor
 public class CheckingAccountController {
@@ -24,7 +24,7 @@ public class CheckingAccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CheckingAccountDto> retrieveContoCorrenteById(@PathVariable Long id) {
-        return ResponseEntity.ok(checkingAccountService.retrieveContoCorrenteById(id));
+        return ResponseEntity.ok(checkingAccountService.retrieveCheckingAccountById(id));
     }
 
     @GetMapping("/{id}/balance")

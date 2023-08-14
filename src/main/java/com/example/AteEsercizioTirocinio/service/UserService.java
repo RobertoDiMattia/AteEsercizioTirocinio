@@ -5,8 +5,11 @@ import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
+import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,5 +42,11 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Page<User> retrieveAllUsers(int pageFrom, int pageTo) {
+        var pageble = PageRequest.of(pageFrom, pageTo);
+        var users = userRepository.findAll(pageble);
+        return users;
     }
 }

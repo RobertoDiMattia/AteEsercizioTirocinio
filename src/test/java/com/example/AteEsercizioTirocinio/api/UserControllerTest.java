@@ -12,11 +12,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -31,7 +32,6 @@ class UserControllerTest {
     private static final String FIRST_NAME = "Roby";
     private static final String LAST_NAME = "Dima";
     private static final Long EXISTING_USER_ID = 3L;
-    private static final Long EXISTING_CHECKING_ACCOUNT_ID = 9L;
 
     @Test
     void testAddUser() throws Exception {
@@ -42,11 +42,11 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestUtils.json(mockedUserCreationDto())))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(EXISTING_USER_ID))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(FIRST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(LAST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EMAIL));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(EXISTING_USER_ID))
+                .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
+                .andExpect(jsonPath("$.lastName").value(LAST_NAME))
+                .andExpect(jsonPath("$.email").value(EMAIL));
     }
 
     @Test
@@ -54,11 +54,11 @@ class UserControllerTest {
         var userDto = mockedUserDto();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(EXISTING_USER_ID))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(FIRST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(LAST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EMAIL));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(EXISTING_USER_ID))
+                .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
+                .andExpect(jsonPath("$.lastName").value(LAST_NAME))
+                .andExpect(jsonPath("$.email").value(EMAIL));
     }
 
     @Test
@@ -68,17 +68,17 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/user/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(TestUtils.json(mockedEditDto())))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(EXISTING_USER_ID))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(FIRST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(LAST_NAME))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(EMAIL));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(EXISTING_USER_ID))
+                .andExpect(jsonPath("$.firstName").value(FIRST_NAME))
+                .andExpect(jsonPath("$.lastName").value(LAST_NAME))
+                .andExpect(jsonPath("$.email").value(EMAIL));
     }
 
     @Test
     void testDeleteUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(status().isOk());
     }
 
     private UserCreationRequestDto mockedUserCreationDto() {

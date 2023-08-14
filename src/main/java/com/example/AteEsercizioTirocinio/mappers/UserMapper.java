@@ -13,6 +13,8 @@ public interface UserMapper {
 
     UserDto entityToDto(User user);
 
+//    Page<UserDto> entityToDto(Page<User> user);
+
     User editDtoToEntity(UserEditDto userEditDto);
 
     UserDto editEntityToDto(UserEditDto userEditDto);
