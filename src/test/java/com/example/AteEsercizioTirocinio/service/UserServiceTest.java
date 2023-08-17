@@ -38,18 +38,11 @@ class UserServiceTest {
 
     @Test
     public void testAddUser() {
-        UserCreationRequestDto userCreationRequestDto = new UserCreationRequestDto();
-        userCreationRequestDto.setFirstName(FIRST_NAME);
-        userCreationRequestDto.setLastName(LAST_NAME);
-        userCreationRequestDto.setEmail(EMAIL);
-
-        var userDto = new UserDto();
-        userDto.setFirstName(FIRST_NAME);
-        userDto.setLastName(LAST_NAME);
-        userDto.setEmail(EMAIL);
+        var userCreationRequestDto = mockedUserCreationDto();
+        var userDto = mockedUserDto();
 
         when(userMapper.creationDtoToEntity(any())).thenReturn(new User());
-        when(userMapper.entityToDto(any())).thenReturn(userDto);
+        when(userMapper.entityToDto((User) any())).thenReturn(userDto);
 
         var addedUser = userService.addUser(userCreationRequestDto);
 
@@ -70,16 +63,25 @@ class UserServiceTest {
     @Test
     public void testRetrieveUserById_UserFound() {
         var user = mockedUser();
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        var result = mockedUserDto();
 
-        var result = userService.retrieveUserById(EXISTING_USER_ID);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+        when(userMapper.entityToDto(user)).thenReturn(result);
+
+        var retrievedUser = userService.retrieveUserById(EXISTING_USER_ID);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(EXISTING_USER_ID);
+        assertEquals(FIRST_NAME, retrievedUser.getFirstName());
+        assertEquals(LAST_NAME, retrievedUser.getLastName());
+        assertEquals(EMAIL, retrievedUser.getEmail());
 
         //ESERCITAZIONE
         assertNotNull(result);
         assertEquals(EXISTING_USER_ID, result.getId());
+        assertEquals(FIRST_NAME, result.getFirstName());
+        assertEquals(LAST_NAME, result.getLastName());
+        assertEquals(EMAIL, result.getEmail());
     }
 
     @Test
@@ -97,18 +99,20 @@ class UserServiceTest {
     public void testUpdateUserFound() {
         var editDto = mockedUserEditDto();
         var user = mockedUser();
+        var userDto = mockedUserDto();
 
-        when(userMapper.editDtoToEntity(any(UserEditDto.class))).thenReturn(user);
         when(userRepository.existsById(EXISTING_USER_ID)).thenReturn(true);
+        when(userMapper.editDtoToEntity(any())).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
+        when(userMapper.entityToDto(user)).thenReturn(userDto);
 
-        UserDto updatedUser = userService.updateUser(EXISTING_USER_ID, editDto);
+        var resultUser = userService.updateUser(EXISTING_USER_ID, editDto);
 
-        assertThat(updatedUser).isNotNull();
-        assertThat(updatedUser.getId()).isEqualTo(EXISTING_USER_ID);
-        assertThat(updatedUser.getFirstName()).isEqualTo(editDto.getFirstName());
-        assertThat(updatedUser.getLastName()).isEqualTo(editDto.getLastName());
-        assertThat(updatedUser.getEmail()).isEqualTo(editDto.getEmail());
+        assertThat(resultUser).isNotNull();
+        assertThat(resultUser.getId()).isEqualTo(EXISTING_USER_ID);
+        assertThat(resultUser.getFirstName()).isEqualTo(editDto.getFirstName());
+        assertThat(resultUser.getLastName()).isEqualTo(editDto.getLastName());
+        assertThat(resultUser.getEmail()).isEqualTo(editDto.getEmail());
     }
 
     @Test
@@ -140,6 +144,24 @@ class UserServiceTest {
 
     private UserEditDto mockedUserEditDto() {
         return UserEditDto.builder()
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .email(EMAIL)
+                .build();
+    }
+
+    private UserDto mockedUserDto() {
+        return UserDto.builder()
+                .id(EXISTING_USER_ID)
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .email(EMAIL)
+                .checkingAccountId(10L)
+                .build();
+    }
+
+    private UserCreationRequestDto mockedUserCreationDto() {
+        return UserCreationRequestDto.builder()
                 .firstName(FIRST_NAME)
                 .lastName(LAST_NAME)
                 .email(EMAIL)

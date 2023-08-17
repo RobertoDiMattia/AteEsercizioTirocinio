@@ -31,7 +31,7 @@ class UserControllerTest {
     private static final String EMAIL = "rob@mail.it";
     private static final String FIRST_NAME = "Roby";
     private static final String LAST_NAME = "Dima";
-    private static final Long EXISTING_USER_ID = 3L;
+    private static final Long EXISTING_USER_ID = 1L;
 
     @Test
     void testAddUser() throws Exception {
@@ -52,6 +52,8 @@ class UserControllerTest {
     @Test
     void testRetrieveUserById() throws Exception {
         var userDto = mockedUserDto();
+
+        when(userService.retrieveUserById(EXISTING_USER_ID)).thenReturn(userDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/1"))
                 .andExpect(status().isOk())

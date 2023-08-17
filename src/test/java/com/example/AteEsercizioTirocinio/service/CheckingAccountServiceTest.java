@@ -40,7 +40,7 @@ class CheckingAccountServiceTest {
     @InjectMocks
     private CheckingAccountService checkingAccountService;
 
-    private static final Long EXISTING_USER_ID = 10L;
+    private static final Long EXISTING_USER_ID = 1L;
     private static final String EMAIL = "rob@mail.it";
     private static final String FIRST_NAME = "Roby";
     private static final String LAST_NAME = "Dima";

@@ -6,6 +6,8 @@ import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.model.User;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -13,7 +15,7 @@ public interface UserMapper {
 
     UserDto entityToDto(User user);
 
-//    Page<UserDto> entityToDto(Page<User> user);
+    List<UserDto> entityToDto(List<User> user);
 
     User editDtoToEntity(UserEditDto userEditDto);
 
