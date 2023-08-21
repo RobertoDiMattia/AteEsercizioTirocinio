@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,34 +25,39 @@ public class CheckingAccountRepositoryTest {
 
     @Test
     public void testFindLastFiveTransactions() {
-        User user = mockedUser();
-        CheckingAccount checkingAccount = mockedCheckingAccount(user);
 
-        User managedUser = entityManager.merge(user);
-        checkingAccount.setUser(managedUser);
-        entityManager.persistAndFlush(checkingAccount);
+        User managedUser = entityManager.merge(mockedUser());
+        CheckingAccount checkingAccount = entityManager.merge(mockedCheckingAccount(managedUser));
+        checkingAccount.setTransactions(new ArrayList<>());
+        for (Transaction t : mockedTransactions()) {
+            Transaction saved = entityManager.merge(t);
+            checkingAccount.getTransactions().add(saved);
+        }
 
-        List<Transaction> lastFiveTransactions = checkingAccountRepository.findLastFiveTransactions(checkingAccount.getId());
+        checkingAccount = entityManager.merge(mockedCheckingAccount(managedUser));
 
-        assertThat(lastFiveTransactions).hasSize(5);
+        List<Transaction> transactions = checkingAccountRepository.findLastFiveTransactions(checkingAccount.getId());
+
+        assertThat(transactions).hasSize(5);
+    }
+
+
+    private User mockedUser() {
+        return User.builder()
+                .id(99L)
+                .firstName("rob")
+                .lastName("dima")
+                .email("rob@gmail.com")
+                .build();
     }
 
     private CheckingAccount mockedCheckingAccount(User user) {
         return CheckingAccount.builder()
-                .id(1L)
+                .id(25L)
                 .user(user)
                 .transactions(mockedTransactions())
                 .iban("IBAN12345678910")
                 .balance(1000.0)
-                .build();
-    }
-
-    private User mockedUser() {
-        return User.builder()
-                .id(12L)
-                .firstName("rob")
-                .lastName("dima")
-                .email("rob@gmail.com")
                 .build();
     }
 

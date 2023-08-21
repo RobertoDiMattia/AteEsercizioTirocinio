@@ -5,9 +5,12 @@ import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("api/user")
 @RestController
@@ -37,13 +40,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<UserDto>> retrieveUserList(
-//            @RequestParam(defaultValue = "0") @Min(0) int pageNumb,
-//            @RequestParam(defaultValue = "10") @Min(1) int pageSize
-//    ) {
-//        return ResponseEntity.ok(userService.retrieveAllUsers(pageNumb, pageSize));
-//    }
+    @GetMapping
+    public ResponseEntity<List<UserDto>> retrieveUserList(
+            @RequestParam(defaultValue = "0") @Min(0) int pageNumb,
+            @RequestParam(defaultValue = "10") @Min(1) int pageSize
+    ) {
+        return ResponseEntity.ok(userService.retrieveAllUsers(pageNumb, pageSize));
+    }
 
 //    @GetMapping
 //    public ResponseEntity<Page<UserDto>> retrieveUserList(

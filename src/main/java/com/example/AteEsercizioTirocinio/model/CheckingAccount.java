@@ -1,7 +1,6 @@
 package com.example.AteEsercizioTirocinio.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +26,6 @@ public class CheckingAccount {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @NotEmpty
     @OneToMany(mappedBy = "checkingAccount")
     private List<Transaction> transactions;
 

@@ -29,6 +29,7 @@ public class Transaction {
     private double amount;
 
     @NotNull
+//    @Enumerated(EnumType.STRING)
     public Type type;
 
     @Getter

@@ -18,6 +18,4 @@ public interface UserMapper {
     List<UserDto> entityToDto(List<User> user);
 
     User editDtoToEntity(UserEditDto userEditDto);
-
-    UserDto editEntityToDto(UserEditDto userEditDto);
 }
