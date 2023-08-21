@@ -1,14 +1,17 @@
 package com.example.AteEsercizioTirocinio.repository;
 
+import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
-import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.model.Transaction;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class CheckingAccountRepositoryTest {
@@ -19,32 +22,27 @@ public class CheckingAccountRepositoryTest {
     @Autowired
     private CheckingAccountRepository checkingAccountRepository;
 
-    @Autowired
-    private CheckingAccountMapper checkingAccountMapper;
+    @Test
+    public void testFindLastFiveTransactions() {
+        CheckingAccountDto checkingAccountDto = entityManager.persistAndFlush(mockedCheckingAccount());
+        entityManager.persistAndFlush(checkingAccountDto);
 
-//    @Test
-//    public void testFindLastFiveTransactions() {
-//        var testCheckingAccountDto = entityManager.persistAndFlush(mockedCheckingAccount());
-//        var testCheckingAccount = checkingAccountMapper.listEntityToListDto((List<TransactionDto>) testCheckingAccountDto);
-//        entityManager.persistAndFlush(testCheckingAccount);
-//
-//        List<TransactionDto> lastFiveTransactions = checkingAccountRepository.findLastFiveTransactions(testCheckingAccount.getId());
-//
-//        assertThat(lastFiveTransactions).hasSize(5);
-//    }
-//
-//    private CheckingAccountDto mockedCheckingAccount() {
-//        List<TransactionDto> transactionDtoList = (List<TransactionDto>) mockedTransactionDto();
-//        return CheckingAccountDto.builder()
-//                .id(1L)
-//                .UserId(123L)
-//                .transactions(transactionDtoList)
-//                .iban("IBAN12345678910")
-//                .balance(1000.0)
-//                .build();
-//    }
+        List<TransactionDto> lastFiveTransactions = checkingAccountRepository.findLastFiveTransactions(checkingAccountDto.getId());
 
-    private TransactionDto mockedTransactionDto() {
+        assertThat(lastFiveTransactions).hasSize(5);
+    }
+
+    private CheckingAccountDto mockedCheckingAccount() {
+        return CheckingAccountDto.builder()
+                .id(1L)
+                .UserId(123L)
+                .transactions(mockedTransactionDto())
+                .iban("IBAN12345678910")
+                .balance(1000.0)
+                .build();
+    }
+
+    private List<TransactionDto> mockedTransactionDto() {
         var transaction1 = TransactionDto.builder()
                 .id(2L)
                 .dateTime(LocalDateTime.now())
@@ -74,7 +72,7 @@ public class CheckingAccountRepositoryTest {
                 .amount(300)
                 .type(Transaction.Type.WITHDRAWAL)
                 .build();
-        return (TransactionDto) List.of(transaction1, transaction2, transaction3, transaction4, transaction5);
+        return List.of(transaction1, transaction2, transaction3, transaction4, transaction5);
     }
 }
 
