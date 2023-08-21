@@ -24,7 +24,11 @@ public class CheckingAccountRepositoryTest {
 
     @Test
     public void testFindLastFiveTransactions() {
-        CheckingAccount checkingAccount = entityManager.persistAndFlush(mockedCheckingAccount());
+        User user = mockedUser();
+        CheckingAccount checkingAccount = mockedCheckingAccount(user);
+
+        User managedUser = entityManager.merge(user);
+        checkingAccount.setUser(managedUser);
         entityManager.persistAndFlush(checkingAccount);
 
         List<Transaction> lastFiveTransactions = checkingAccountRepository.findLastFiveTransactions(checkingAccount.getId());
@@ -32,9 +36,7 @@ public class CheckingAccountRepositoryTest {
         assertThat(lastFiveTransactions).hasSize(5);
     }
 
-    private CheckingAccount mockedCheckingAccount() {
-        User user = mockedUser();
-
+    private CheckingAccount mockedCheckingAccount(User user) {
         return CheckingAccount.builder()
                 .id(1L)
                 .user(user)
@@ -51,7 +53,6 @@ public class CheckingAccountRepositoryTest {
                 .lastName("dima")
                 .email("rob@gmail.com")
                 .build();
-
     }
 
     private List<Transaction> mockedTransactions() {
