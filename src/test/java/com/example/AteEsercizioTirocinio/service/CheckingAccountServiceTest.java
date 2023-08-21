@@ -86,33 +86,21 @@ class CheckingAccountServiceTest {
 
     @Test
     public void testRetrieveLastFiveTransactions() {
-        var transaction = mockedTransactionDto();
+        var transactionDtoList = mockedTransactionDto();
 
-        when(checkingAccountRepository.findLastFiveTransactions(anyLong())).thenReturn(List.of(transaction));
-        when(checkingAccountMapper.listEntityToListDto(any())).thenReturn(List.of(mockedCheckingAccountDto()));
+        when(checkingAccountRepository.findLastFiveTransactions(anyLong())).thenReturn(List.of(Transaction.builder().build()));
+        when(checkingAccountMapper.listEntityToListDto(any())).thenReturn(transactionDtoList);
 
         var response =
                 checkingAccountService.retrieveLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
         var retrievedTransactionDto = response.get(0);
 
         assertNotNull(response);
-        assertEquals(EXISTING_USER_ID, response.size());
+        assertEquals(5, response.size());
         assertEquals(EXISTING_CHECKING_ACCOUNT_ID, retrievedTransactionDto.getId());
-        assertEquals(IBAN, retrievedTransactionDto.getIban());
-        assertEquals(BALANCE, retrievedTransactionDto.getBalance());
 
         verify(checkingAccountRepository, times(1))
                 .findLastFiveTransactions(EXISTING_CHECKING_ACCOUNT_ID);
-    }
-
-    private TransactionDto mockedTransactionDto() {
-        return TransactionDto.builder()
-                .id(5L)
-                .amount(100)
-                .checkingAccountId(EXISTING_CHECKING_ACCOUNT_ID)
-                .type(Transaction.Type.DEPOSIT)
-                .dateTime(LocalDateTime.now())
-                .build();
     }
 
     private CheckingAccountDto mockedCheckingAccountDto() {
@@ -142,6 +130,39 @@ class CheckingAccountServiceTest {
                 .lastName(LAST_NAME)
                 .email(EMAIL)
                 .build();
+    }
+
+    private List<TransactionDto> mockedTransactionDto() {
+        var transaction1 = TransactionDto.builder()
+                .id(2L)
+                .dateTime(LocalDateTime.now())
+                .amount(500)
+                .type(Transaction.Type.DEPOSIT)
+                .build();
+        var transaction2 = TransactionDto.builder()
+                .id(1L)
+                .dateTime(LocalDateTime.now())
+                .amount(450)
+                .build();
+        var transaction3 = TransactionDto.builder()
+                .id(2L)
+                .dateTime(LocalDateTime.now())
+                .amount(400)
+                .type(Transaction.Type.DEPOSIT)
+                .build();
+        var transaction4 = TransactionDto.builder()
+                .id(2L)
+                .dateTime(LocalDateTime.now())
+                .amount(250)
+                .type(Transaction.Type.WITHDRAWAL)
+                .build();
+        var transaction5 = TransactionDto.builder()
+                .id(2L)
+                .dateTime(LocalDateTime.now())
+                .amount(300)
+                .type(Transaction.Type.WITHDRAWAL)
+                .build();
+        return List.of(transaction1, transaction2, transaction3, transaction4, transaction5);
     }
 
 }

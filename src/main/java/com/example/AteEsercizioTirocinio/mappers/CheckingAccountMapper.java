@@ -4,6 +4,7 @@ import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
 import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
+import com.example.AteEsercizioTirocinio.model.Transaction;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CheckingAccountMapper {
 
     CheckingAccountDto entityToDto(CheckingAccount checkingAccount);
 
-    List<CheckingAccountDto> listEntityToListDto(List<TransactionDto> transactionDtoList);
+    List<TransactionDto> listEntityToListDto(List<Transaction> transactions);
 
     CheckingAccount creationRequestDtoToEntity(CheckingAccountCreationRequestDto checkingAccountCreationRequestDto);
 

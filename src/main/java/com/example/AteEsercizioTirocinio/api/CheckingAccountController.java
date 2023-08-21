@@ -2,6 +2,7 @@ package com.example.AteEsercizioTirocinio.api;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.service.CheckingAccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class CheckingAccountController {
     }
 
     @GetMapping("/{id}/last5transactions")
-    public ResponseEntity<List<CheckingAccountDto>> getLast5Transactions(@PathVariable Long id) {
+    public ResponseEntity<List<TransactionDto>> getLast5Transactions(@PathVariable Long id) {
         return ResponseEntity.ok(checkingAccountService.retrieveLastFiveTransactions(id));
     }
 

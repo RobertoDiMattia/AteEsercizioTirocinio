@@ -2,6 +2,7 @@ package com.example.AteEsercizioTirocinio.service;
 
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountCreationRequestDto;
 import com.example.AteEsercizioTirocinio.dto.CheckingAccountDto;
+import com.example.AteEsercizioTirocinio.dto.TransactionDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.CheckingAccountMapper;
 import com.example.AteEsercizioTirocinio.repository.CheckingAccountRepository;
@@ -58,7 +59,7 @@ public class CheckingAccountService {
         return checkingAccount.getBalance();
     }
 
-    public List<CheckingAccountDto> retrieveLastFiveTransactions(Long id) {
+    public List<TransactionDto> retrieveLastFiveTransactions(Long id) {
         var checkingAccount = checkingAccountRepository.findLastFiveTransactions(id);
         return checkingAccountMapper.listEntityToListDto(checkingAccount);
     }
