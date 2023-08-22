@@ -5,12 +5,10 @@ import com.example.AteEsercizioTirocinio.dto.UserDto;
 import com.example.AteEsercizioTirocinio.dto.UserEditDto;
 import com.example.AteEsercizioTirocinio.exceptions.NotFoundException;
 import com.example.AteEsercizioTirocinio.mappers.UserMapper;
-import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,10 +49,14 @@ public class UserService {
 //        return userMapper.entityToDto(user);
 //    }
 
-    public Page<UserDto> retrieveAllUsers(int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        Page<User> userPage = userRepository.findAll(pageable);
-        return userPage.map(userMapper::entityToDto);
-    }
+//    public Page<UserDto> retrieveAllUsers(int pageNum, int pageSize) {
+//        Pageable pageable = PageRequest.of(pageNum, pageSize);
+//        Page<User> userPage = userRepository.findAll(pageable);
+//        return userPage.map(userMapper::entityToDto);
+//    }
 
+    public Page<UserDto> retrieveAllUsers(int pageNum, int pageSize) {
+        return userRepository.findAll(PageRequest.of(pageNum, pageSize))
+                .map(userMapper::entityToDto);
+    }
 }

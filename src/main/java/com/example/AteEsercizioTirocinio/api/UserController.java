@@ -53,7 +53,6 @@ public class UserController {
             @RequestParam(defaultValue = "0") @Min(0) int pageNum,
             @RequestParam(defaultValue = "10") @Min(1) int pageSize
     ) {
-        Page<UserDto> usersPage = userService.retrieveAllUsers(pageNum, pageSize);
-        return ResponseEntity.ok(usersPage);
+        return ResponseEntity.ok(userService.retrieveAllUsers(pageNum, pageSize));
     }
 }

@@ -34,7 +34,7 @@ public class CheckingAccountRepositoryTest {
             checkingAccount.getTransactions().add(saved);
         }
 
-        checkingAccount = entityManager.merge(mockedCheckingAccount(managedUser));
+        checkingAccount = entityManager.merge(checkingAccount);
 
         List<Transaction> transactions = checkingAccountRepository.findLastFiveTransactions(checkingAccount.getId());
 
@@ -55,7 +55,6 @@ public class CheckingAccountRepositoryTest {
         return CheckingAccount.builder()
                 .id(25L)
                 .user(user)
-                .transactions(mockedTransactions())
                 .iban("IBAN12345678910")
                 .balance(1000.0)
                 .build();
@@ -71,6 +70,7 @@ public class CheckingAccountRepositoryTest {
         var transaction2 = Transaction.builder()
                 .id(2L)
                 .dateTime(LocalDateTime.now())
+                .type(Transaction.Type.DEPOSIT)
                 .amount(450)
                 .build();
         var transaction3 = Transaction.builder()
