@@ -17,7 +17,7 @@ public interface CheckingAccountRepository extends JpaRepository<CheckingAccount
 
 //    @Query(value = "SELECT * FROM Transaction t WHERE t.checking_account_id = :checking_account_id ORDER BY t.id DESC LIMIT 5", nativeQuery = true)
 
-    @Query(value = "SELECT * FROM \"transaction\" WHERE checking_account_id = :checking_account_id ORDER BY id DESC LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM \"transaction\" WHERE \"checking_account_id\" = :checking_account_id ORDER BY \"id\" DESC LIMIT 5", nativeQuery = true)
     List<Transaction> findLastFiveTransactions(@Param("checking_account_id") Long checkingAccountId);
 }
 
