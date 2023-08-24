@@ -40,9 +40,8 @@ public class CheckingAccountRepositoryTest {
 
         List<Transaction> transactions = checkingAccountRepository.findLastFiveTransactions(checkingAccount.getId());
 
-        assertThat(transactions).hasSize(0);
+        assertThat(transactions).hasSize(5);
     }
-
 
     private User mockedUser() {
         return User.builder()

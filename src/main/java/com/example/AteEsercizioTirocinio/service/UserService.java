@@ -47,13 +47,13 @@ public class UserService {
 //        var pageble = PageRequest.of(pageNumb, pageSize);
 //        var user = userRepository.findAll(pageble).getContent();
 //        return userMapper.entityToDto(user);
-//    }
+//    } LIST
 
 //    public Page<UserDto> retrieveAllUsers(int pageNum, int pageSize) {
 //        Pageable pageable = PageRequest.of(pageNum, pageSize);
 //        Page<User> userPage = userRepository.findAll(pageable);
 //        return userPage.map(userMapper::entityToDto);
-//    }
+//    } PAGE
 
     public Page<UserDto> retrieveAllUsers(int pageNum, int pageSize) {
         return userRepository.findAll(PageRequest.of(pageNum, pageSize))
