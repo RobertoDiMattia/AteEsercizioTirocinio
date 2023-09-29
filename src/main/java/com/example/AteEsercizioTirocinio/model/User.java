@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "user")
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,4 +30,7 @@ public class User {
 
     @NotBlank
     private String email;
+
+    @NotBlank
+    private String password;
 }

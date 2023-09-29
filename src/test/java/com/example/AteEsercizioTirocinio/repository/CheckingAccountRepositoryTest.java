@@ -3,7 +3,6 @@ package com.example.AteEsercizioTirocinio.repository;
 import com.example.AteEsercizioTirocinio.model.CheckingAccount;
 import com.example.AteEsercizioTirocinio.model.Transaction;
 import com.example.AteEsercizioTirocinio.model.User;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,7 +24,6 @@ public class CheckingAccountRepositoryTest {
     private CheckingAccountRepository checkingAccountRepository;
 
     @Test
-    @Transactional
     public void testFindLastFiveTransactions() {
 
         User managedUser = entityManager.merge(mockedUser());
@@ -45,7 +43,7 @@ public class CheckingAccountRepositoryTest {
 
     private User mockedUser() {
         return User.builder()
-                .id(99L)
+//                .id(99L)
                 .firstName("rob")
                 .lastName("dima")
                 .email("rob@gmail.com")
