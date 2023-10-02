@@ -33,7 +33,7 @@ public class SecurityConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/checkingAccount/**", "/error").permitAll()
+                        .requestMatchers("/api/checkingAccount/**", "/api/user/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

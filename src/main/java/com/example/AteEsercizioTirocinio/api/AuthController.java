@@ -2,7 +2,6 @@ package com.example.AteEsercizioTirocinio.api;
 
 import com.example.AteEsercizioTirocinio.model.AuthenticationResponse;
 import com.example.AteEsercizioTirocinio.model.User;
-import com.example.AteEsercizioTirocinio.service.MyUserDetailsService;
 import com.example.AteEsercizioTirocinio.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final MyUserDetailsService myUserDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
@@ -33,7 +33,7 @@ public class AuthController {
             throw new Exception("Incorrect username or password", e);
         }
 
-        final UserDetails userDetails = myUserDetailsService
+        final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         final String jwt = jwtUtil.generateToken(userDetails);
