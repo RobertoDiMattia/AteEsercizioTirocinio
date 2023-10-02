@@ -26,7 +26,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (user.getEmail().endsWith("@admin.com")) {
+        if (user.getEmail().startsWith("rdmattia80") && user.getEmail().endsWith("@gmail.com")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
