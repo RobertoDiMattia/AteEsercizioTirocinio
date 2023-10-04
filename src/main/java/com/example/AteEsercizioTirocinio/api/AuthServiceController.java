@@ -31,15 +31,16 @@ public class AuthServiceController {
                 )
         );
         return ResponseEntity.ok("login avvenuto con successo");
+
         // Genera un token JWT
 //        String jwt = Jwts.builder()
-//                .setSubject(loginRequest.getEmail())  // imposta l'utente come soggetto del token
-//                .setIssuedAt(new Date())  // data di emissione
+//                .setSubject(loginRequest.getEmail())  //l'utente come soggetto del token
+//                .setIssuedAt(new Date())
 //                .setExpiration(new Date(System.currentTimeMillis() + 86400000))  //data di scadenza,1 giorno
-//                .signWith(SignatureAlgorithm.HS256, "secretkey")  // firma il token con una chiave segreta
+//                .signWith(SignatureAlgorithm.HS256, "secretkey")  // firma token con una chiave segreta
 //                .compact();  // costruisce il token
-
-//        return ResponseEntity.ok(jwt);  // restituisce il token JWT
+//
+//        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/register")
