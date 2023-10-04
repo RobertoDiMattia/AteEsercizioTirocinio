@@ -30,7 +30,7 @@ public class AuthServiceController {
                         loginRequest.getPassword()
                 )
         );
-        return ResponseEntity.ok("login avvenuto con successo"); // puoi migliorare questa risposta
+        return ResponseEntity.ok("login avvenuto con successo");
         // Genera un token JWT
 //        String jwt = Jwts.builder()
 //                .setSubject(loginRequest.getEmail())  // imposta l'utente come soggetto del token
