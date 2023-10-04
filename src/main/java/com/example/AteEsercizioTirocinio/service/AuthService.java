@@ -1,6 +1,6 @@
 package com.example.AteEsercizioTirocinio.service;
 
-import com.example.AteEsercizioTirocinio.model.User;
+import com.example.AteEsercizioTirocinio.dto.LoginRequest;
 import com.example.AteEsercizioTirocinio.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +15,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public String authenticate(User authenticationRequest) throws Exception {
+    public String authenticate(LoginRequest loginRequest) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
             throw new Exception("Incorrect email or password", e);
         }
 
-        return jwtUtil.generateToken(authenticationRequest.getEmail());
+        return jwtUtil.generateToken(loginRequest.getEmail());
     }
 }
