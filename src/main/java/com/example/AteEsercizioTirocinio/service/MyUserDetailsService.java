@@ -1,6 +1,5 @@
 package com.example.AteEsercizioTirocinio.service;
 
-import com.example.AteEsercizioTirocinio.dto.RegistrationRequest;
 import com.example.AteEsercizioTirocinio.model.Role;
 import com.example.AteEsercizioTirocinio.model.User;
 import com.example.AteEsercizioTirocinio.repository.UserRepository;
@@ -10,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import java.util.List;
 public class MyUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -40,13 +37,13 @@ public class MyUserDetailsService implements UserDetailsService {
                 .authorities(authorities)
                 .build();
     }
-
-    public void saveUser(RegistrationRequest registrationRequest) {
-        // converte RegistrationRequest in un oggetto User
-        User user = new User();
-        user.setEmail(registrationRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-
-        userRepository.save(user);
-    }
 }
+
+//    public void saveUser(RegistrationRequest registrationRequest) {
+//        // converte RegistrationRequest in un oggetto User
+//        User user = new User();
+//        user.setEmail(registrationRequest.getEmail());
+//        user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+//
+//        userRepository.save(user);
+//    }

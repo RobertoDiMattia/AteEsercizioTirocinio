@@ -62,25 +62,20 @@ public class SecurityConfigurer {
         return new BCryptPasswordEncoder();
     }
 }
-
 //    @Bean
 //    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
 //        return http.getSharedObject(AuthenticationManager.class);
 //    }
-
-
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
 //    }
-
 //    @Bean
 //    public AuthenticationManager customAuthenticationManager(AuthenticationManagerBuilder authenticationBuilder) throws Exception {
 //        authenticationBuilder
 //                .authenticationProvider(authenticationProvider());
 //        return authenticationBuilder.build();
 //    }
-
 // *  è usato per corrispondere a qualsiasi carattere all'interno di un segmento specifico di un URL.
 // ** è usato per corrispondere a qualsiasi carattere attraverso più segmenti, rendendolo utile per applicare regole
 // di sicurezza o di routing a un intero sottoinsieme di URL senza specificare ogni percorso individualmente.

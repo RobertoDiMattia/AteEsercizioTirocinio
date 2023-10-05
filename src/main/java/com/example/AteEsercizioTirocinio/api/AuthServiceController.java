@@ -31,8 +31,16 @@ public class AuthServiceController {
                 )
         );
         return ResponseEntity.ok("login avvenuto con successo");
+    }
 
-        // Genera un token JWT
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
+
+        return ResponseEntity.ok("Registrazione completata con successo");
+    }
+}
+
+// Genera un token JWT
 //        String jwt = Jwts.builder()
 //                .setSubject(loginRequest.getEmail())  //l'utente come soggetto del token
 //                .setIssuedAt(new Date())
@@ -41,14 +49,6 @@ public class AuthServiceController {
 //                .compact();  // costruisce il token
 //
 //        return ResponseEntity.ok(jwt);
-    }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
-
-        // salva l'utente nel database
-        userDetailsService.saveUser(registrationRequest);
-
-        return ResponseEntity.ok("Registrazione completata con successo");
-    }
-}
+//        // salva l'utente nel database
+//        userDetailsService.saveUser(registrationRequest);
